@@ -3,11 +3,12 @@ const socketio = require('socket.io');
 require('dotenv').config();
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 
 app.use(express.json());
+app.use(express.static('../client/main'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
