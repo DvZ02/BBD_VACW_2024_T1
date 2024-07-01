@@ -4,6 +4,10 @@ const xOutput = document.getElementById("xCoOrd");
 const yOutput = document.getElementById("yCoOrd");
 const magOutput = document.getElementById("magnitude");
 
+//get the canvas
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
+
 function getOrientation() {
     const rawData = getPhoneData()
 
@@ -60,17 +64,41 @@ function run() {
 
     gyroscope.addEventListener("reading", (e) => {
 
-        let magnitude = Math.sqrt((gyroscope.x * gyroscope.x) + (gyroscope.y * gyroscope.y));
-        let xNorm = gyroscope.x / magnitude;
-        let yNorm = gyroscope.y / magnitude;
+        let xNorm = 0.0;
+        let yNorm = 0.0;
+
+        if (gyroscope.x == 0.0) {
+            xNorm = 0.0;
+            yNorm = 1.0;
+        } else if (gyroscope.y == 0.0) {
+            yNorm = 0.0;
+            xNorm = 1.0;
+        } else {
+            let magnitude = Math.sqrt((gyroscope.x * gyroscope.x) + (gyroscope.y * gyroscope.y));
+            xNorm = gyroscope.x / magnitude;
+            yNorm = gyroscope.y / magnitude;    
+        }
 
         xOutput.innerText = xNorm;
         yOutput.innerText = yNorm;
         magOutput.innerText = magnitude;
+
+        updateScreen(xNorm, yNorm);
     });
 
     gyroscope.start();
 }
+
+function initializeCanvas() {
+    //get the windows width
+    let width = window.innerWidth;
+    
+    //set the canvas size
+    context.canvas.width = width;
+    context.canvas.height = width; 
+}
+
+
 
 run();
 
