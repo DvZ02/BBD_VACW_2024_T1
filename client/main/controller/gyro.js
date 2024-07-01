@@ -2,7 +2,7 @@
 //get the direction display elements
 const xOutput = document.getElementById("xCoOrd");
 const yOutput = document.getElementById("yCoOrd");
-const zOutput = document.getElementById("zCoOrd");
+const magOutput = document.getElementById("magnitude");
 
 function getOrientation() {
     const rawData = getPhoneData()
@@ -38,14 +38,14 @@ function run() {
     //get the direction display elements
     const xOutput = document.getElementById("xCoOrd");
     const yOutput = document.getElementById("yCoOrd");
-    const zOutput = document.getElementById("zCoOrd");
+    const magOutput = document.getElementById("magnitude");
     const info = document.getElementById("info");
 
     info.innerText = "Running";
 
     //check if the device support gyro
     
-    let gyroscope = new Gyroscope( {frequency: 60} );
+    let gyroscope = new Gyroscope( {frequency: 1} );
     info.innerText = "gyro initialised";
 
 
@@ -59,41 +59,17 @@ function run() {
     });
 
     gyroscope.addEventListener("reading", (e) => {
-        xOutput.innerText = `Angular velocity along the X-axis ${gyroscope.x}`;
-        yOutput.innerText = `Angular velocity along the Y-axis ${gyroscope.y}`;
-        zOutput.innerText = `Angular velocity along the Z-axis ${gyroscope.z}`;
-    });
-    gyroscope.start();
 
-    /*
-    let gyroscope = null;
-    
-    try {
-        gyroscope = new GyroScope({ referenceFrame: "device" });
-        gyroscope.addEventListener("error", (event) => {
-        // Handle runtime errors.
-        if (event.error.name === "NotAllowedError") {
-            // Branch to code for requesting permission.
-        } else if (event.error.name === "NotReadableError") {
-            showMessage("Cannot connect to the sensor.");
-        }
-        });
-        gyroscope.addEventListener("reading", () => reloadOnShake(gyroscope));
-        gyroscope.start();
-    } catch (error) {
-    
-        // Handle construction errors.
-        if (error.name === "SecurityError") {
-        // See the note above about permissions policy.
-        info.innerText = "Sensor construction was blocked by a permissions policy.";
-        } else if (error.name === "ReferenceError") {
-        info.innerText = "Sensor is not supported by the User Agent.";
-        } else {
-            info.innerText = error.name;
-        throw error;
-        }
-    }
-    */
+        let magnitude = Math.sqrt((gyroscope.x * gyroscope.x) + (gyroscope.y * gyroscope.y));
+        let xNorm = gyroscope.x / magnitude;
+        let yNorm = gyroscope.y / magnitude;
+
+        xOutput.innerText = xNorm;
+        yOutput.innerText = yNorm;
+        magOutput.innerText = magnitude;
+    });
+
+    gyroscope.start();
 }
 
 run();
