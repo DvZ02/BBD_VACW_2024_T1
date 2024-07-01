@@ -75,6 +75,7 @@ io.on('connection',  (socket) => {
      */
     socket.on("RequestSignUp",(data) =>{
         let playerToAdd = JSON.parse(data);
+        console.log(playerToAdd.playerUsername);
         if(playersDB.includes(playerToAdd.playerUsername)){
             socket.emit("RequestSignUpResult", JSON.stringify({result:"Denied"}));
         }
