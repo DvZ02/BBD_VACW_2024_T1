@@ -45,7 +45,7 @@ function run() {
 
     //check if the device support gyro
     
-    let gyro = new Gyroscope( {frequency: 60} );
+    let gyroscope = new Gyroscope( {frequency: 60} );
     info.innerText = "gyro initialised";
 
 
@@ -64,6 +64,7 @@ function run() {
         zOutput.innerText = `Angular velocity along the Z-axis ${gyroscope.z}`;
     });
     gyroscope.start();
+
     /*
     let gyroscope = null;
     
