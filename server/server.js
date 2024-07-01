@@ -20,6 +20,8 @@ let ballX=0, ballY=0, ballZ=0;
 let playersSession=[]; // For now this is a 2D array which contains the usernames for the current game session
 let playersDB = []
 
+let colors = ["blue", "pink", "green", "orange"]
+
 io.on('connection',  (socket) => {
     console.log('New client connected');
 
@@ -77,11 +79,18 @@ io.on('connection',  (socket) => {
         let playerToAdd = JSON.parse(data);
         console.log(playerToAdd.playerUsername);
         if(playersDB.includes(playerToAdd.playerUsername)){
-            socket.emit("RequestSignUpResult", JSON.stringify({result:"Denied"}));
+            socket.emit("RequestSignUpResult", JSON.stringify({
+                result:false, 
+                message: "Denied"
+            }));
         }
         else{
-            playersDB.push(playerToAdd.playerUsername);
-            socket.emit("RequestSignUpResult", JSON.stringify({result:"Granted"}));
+            playersDB.push(playerToAdd.playerUsername); 
+            socket.emit("RequestSignUpResult", JSON.stringify({result:true, message: "Granted"}));
+            socket.broadcast.emit("PlayerJoinded", JSON.stringify({
+                player: playerToAdd.playerUsername, 
+                color: colors[playersDB.length-1]
+            })); 
         }
     });
     //Most socket logic here
