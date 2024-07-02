@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(express.json());
-app.use(express.static('../client/main'));
+app.use(express.static('../client'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
