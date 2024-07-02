@@ -5,9 +5,10 @@ const yOutput = document.getElementById("yCoOrd");
 const magOutput = document.getElementById("magnitude");
 
 //get the canvas
+/*
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-let canvasWidth = 0;
+let canvasWidth = 0;*/
 
 function getOrientation() {
     const rawData = getPhoneData()
@@ -83,7 +84,8 @@ function run() {
         yOutput.innerText = yNorm;
         magOutput.innerText = magnitude;
 
-        updateScreen(xNorm, yNorm);
+        //updateScreen(xNorm, yNorm);
+        handleRotate(xNorm, yNorm);
 
         let norm = {
             x: xNorm,
@@ -106,7 +108,7 @@ function run() {
 
     gyroscope.start();*/
 }
-
+/*
 function initializeCanvas() {
     //get the windows width
     canvasWidth = window.innerWidth / 2;
@@ -134,10 +136,93 @@ function updateScreen(xVal, yVal) {
     context.stroke();
 
 
-}
+}*/
 
 //initializeCanvas();
 //updateScreen(.9, .05)
+var sphere = document.querySelector('.sphere'),
+    spherePerspective = document.querySelector('.sphere-perspective'),
+    followElement = document.querySelector('.follow'),
+    xvis = document.querySelector('.xvis'),
+    yvis = document.querySelector('.yvis'),
+    pvis = document.querySelector('.perspective'),
+    loveit = document.querySelector('.loveit'),
+    follow = true,
+    perspective = 2000;
+
+//document.body.onmousemove = handleRotate;
+/*
+document.addEventListener('onmousemove', handleRotate);
+
+window.onkeydown = function(e){
+  if(e.which === 70){
+    follow = !follow;
+  }
+  followElement.checked = !followElement.checked;
+};
+
+followElement.onchange = function(e){
+  console.log(e);
+  if(e.target.checked)
+    follow = true;
+  else
+    follow = false;  
+};*/
+
+var xdeg,xdegstring,ydeg,ydegstring;
+function handleRotate(e){
+    document.getElementById('info').innerText = 'Rotation:  ' + e;
+  if(follow){
+    xdeg = -360 * e.x / document.body.clientWidth + 180;
+    ydeg = 360 * e.y / document.body.clientHeight + 90;
+    xdegstring = xdeg + 'deg';
+    ydegstring = ydeg + 'deg';
+    
+    xvis.innerHTML = xdegstring;
+    yvis.innerHTML = ydegstring;
+    
+    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
+    
+    /*loveit*/
+    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
+      loveit.className = 'loveit show';
+    }else{
+      loveit.className = 'loveit';  
+    }
+  }
+}
+
+/*
+function handleRotate(xRotate, yRotate){
+    if(follow){
+      xdeg = -360 * xRotate + 180;
+      ydeg = 360 * yRotate + 90;
+      xdegstring = xdeg + 'deg';
+      ydegstring = ydeg + 'deg';
+      
+      xvis.innerHTML = xdegstring;
+      yvis.innerHTML = ydegstring;
+      
+      sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
+      
+      if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
+        loveit.className = 'loveit show';
+      }else{
+        loveit.className = 'loveit';  
+      }
+    }
+  }*/
+
+
+Element.prototype.prefixedStyle = function(p,style){
+  var prefixes = ['webkit','moz','o'],
+      i = 0;
+  p = p.charAt(0).toUpperCase() + p.slice(1);
+  while (Element.prefix = prefixes[i++]){
+    this.style[Element.prefix + p] = style;
+  }
+};
+
 
 
 run();
