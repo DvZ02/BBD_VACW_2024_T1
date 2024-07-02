@@ -194,8 +194,8 @@ var xdeg,xdegstring,ydeg,ydegstring;
 
 function handleRotate(xRotate, yRotate){
     
-    xdeg = -180 * xVal;
-    ydeg = 180 * yVal;
+    xdeg = -180 * xRotate;
+    ydeg = 180 * yRotate;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';
     
