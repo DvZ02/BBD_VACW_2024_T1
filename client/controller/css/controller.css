@@ -12,6 +12,10 @@ h1{
     font-size: 4svh;
 }
 
+.waiting{
+    display: none;
+}
+
 #username{
     font-size: 16px;
     height: 5svh;
@@ -19,6 +23,15 @@ h1{
     margin-top: 15%;  
     margin-bottom: 15%;   
     font-family: "Press Start 2P", system-ui;
+}
+
+.wait{
+    font-size: 3svh;
+    margin-top: 8%;
+    /* margin-bottom: 10%; */
+    margin-left: 5%;
+    margin-right: auto;
+    line-height: 2;
 }
 
 #join{
