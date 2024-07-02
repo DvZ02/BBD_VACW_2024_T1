@@ -1,4 +1,5 @@
 const socket = new io('http://localhost:8000');
+let playerUsernameOnSignUp; 
 
 async function signup(){
     let username = document.getElementById("username").value;
@@ -8,7 +9,11 @@ async function signup(){
     await socket.on("RequestSignUpResult", async (data) =>{
         let serverResponse = JSON.parse(data);
         if(serverResponse.result){
-            // window.location.href = "lobby.html";
+            playerUsername=username;
+            window.location.href = "lobby.html";
+        }
+        else{
+            alert("Username taken");
         }
     });
 }

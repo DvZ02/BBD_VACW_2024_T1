@@ -18,12 +18,13 @@ const server = app.listen(PORT, () => {
 const io = socketio(server);
 let ballX=0, ballY=0, ballZ=0;
 let playersSession=[]; // For now this is a 2D array which contains the usernames for the current game session
+let sessionName="admin";
 let playersDB = []
 
 let colors = ["blue", "pink", "green", "orange"]
 
 io.on('connection',  (socket) => {
-    console.log('New client connected');
+    console.log('Client connected to website');
 
     /**
      * Used to update the current ball movement speed. The speed is based on the cumulative constributions of all the playersSession
@@ -44,13 +45,21 @@ io.on('connection',  (socket) => {
      * Emits RequestPermissionToHostResult event handler which is a struct with the result for "Denied" and "Granted" 
      */
     socket.on("RequestPermissionToHost", (data) =>{
+        console.log("Debug");
         if(playersSession.length != 0){
-            socket.emit("RequestPermissionToHostResult", JSON.stringify({result:"Denied"}));
+            socket.emit("RequestPermissionToHostResult", JSON.stringify({
+                result:"Denied"
+            }));
         }
         else{
             let player = JSON.parse(data);
+            let playerAssignedColor = colors[playersSession.length];
             playersSession.push(player.playerUsername);
-            socket.emit("RequestPermissionToHostResult", JSON.stringify({result:"Granted"}));
+            sessionName = player.sessionNameToCreate;
+            socket.emit("RequestPermissionToHostResult", JSON.stringify({
+                result:"Granted",
+                playerColor:playerAssignedColor
+            }));
         }
     });
 
@@ -61,12 +70,20 @@ io.on('connection',  (socket) => {
      */
     socket.on("RequestPermissionToJoin", (data) =>{
         let player = JSON.parse(data);
-        if(playersSession.length === 0 || playersSession.length===4 || playersSession.includes(player.playerUsername)){
-            socket.emit("RequestPermissionToJoinResult", JSON.stringify({result:"Denied"}));
+        if(playersSession.length === 0 || playersSession.length===4 || playersSession.includes(player.playerUsername) || player.sessionNameToJoin!==sessionName){
+            socket.emit("RequestPermissionToJoinResult", JSON.stringify({
+                result:"Denied"
+            }));
         }
         else{
+            let player = JSON.parse(data);
+            let playerAssignedColor = colors[playersSession.length];
             playersSession.push(player.playerUsername);
-            socket.emit("RequestPermissionToJoinResult", JSON.stringify({result:"Granted"}));
+            sessionName = player.sessionNameToJoin;
+            socket.emit("RequestPermissionToJoinResult", JSON.stringify({
+                result:"Granted",
+                playerColor:playerAssignedColor
+            }));
         }
     });
 

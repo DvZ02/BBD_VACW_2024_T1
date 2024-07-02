@@ -5,12 +5,37 @@ body{
     font-family: sans-serif;
     font-size: 25px;
 }
+
+
 #genCode{
     width: 250px;
     height: 60px;
     font-weight: bold;
     font-size: 20px;
 }
+.HostOrJoin{
+    width: 500px;
+    height: 160px;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: #383838;
+    align-items: center;
+}
+
+#host{
+    width: 250px;
+    height: 60px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#join{
+    width: 250px;
+    height: 60px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 #start{
     width: 250px;
     height: 60px;

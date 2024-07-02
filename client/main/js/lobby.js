@@ -24,3 +24,42 @@ socket.on("PlayerJoinded", (data) =>{
     playerElement.style.color = color;
     document.getElementById("players").appendChild(playerElement);
 });
+
+function hostSession(){
+
+    let sessionName = document.getElementById("sessionName").value;
+    alert("DEBUG");
+    socket.emit("RequestPermissionToHost", JSON.stringify({
+        playerUsername:username,
+        sessionNameToCreate:sessionName
+    }));
+    socket.on("RequestPermissionToHostResult", (data) =>{
+        let serverResponse = JSON.parse(data);
+        if(serverResponse.result === "Denied"){
+            // window.location.href = "lobby.html";
+            alert("Already at maxmimum session capacity"); // For now we only allow one session
+        }
+    });
+}
+
+function joinSession(){
+    let sessionName = document.getElementById("sessionName").value;
+    socket.emit("RequestPermissionToJoin", JSON.stringify({
+        playerUsername:playerUsernameOnSignUp,
+        sessionNameToJoin: sessionName
+    }));
+    socket.on("RequestPermissionToHostResult", (data) =>{
+        let serverResponse = JSON.parse(data);
+        if(serverResponse.result === "Denied"){
+            // window.location.href = "lobby.html";
+            alert("Already at maxmimum session capacity"); // For now we only allow one session
+        }
+        else{
+            document.getElementById("HostOrJoinOptions").remove();
+            socket.emit("PlayerJoined", {
+                playerUsername: playerUsernameOnSignUp,
+                color:serverResponse.playerColor
+            });
+        }
+    });
+}

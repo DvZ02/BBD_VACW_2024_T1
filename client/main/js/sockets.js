@@ -1,6 +1,6 @@
 const socket = new io('http://localhost:8000');
 
-let username = "PlayerOne"; //ToDO. Request Username;
+let username = "PlayerOne"; //ToDO. Request Username; 
 
 socket.emit("RequestSignUp",JSON.stringify({playerUsername:username}));
 
