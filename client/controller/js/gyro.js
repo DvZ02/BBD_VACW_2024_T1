@@ -61,7 +61,7 @@ function run() {
     window.addEventListener('deviceorientation', (event) => {
 
         let gyroX = event.alpha;
-        let gyroY = event.gamma;
+        let gyroY = event.gamma * 2;
 
         let xNorm = 0.0;
         let yNorm = 0.0;
@@ -193,21 +193,25 @@ function handleRotate(e){
 }*/
 
 function handleRotate(xRotate, yRotate){
-      xdeg = -360 * xRotate + 180;
-      ydeg = 360 * yRotate + 90;
-      xdegstring = xdeg + 'deg';
-      ydegstring = ydeg + 'deg';
-      
-      xvis.innerHTML = xdegstring;
-      yvis.innerHTML = ydegstring;
-      
-      sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
-      
-      if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
+
+    //swap x and y because screen will be landscape
+    let xVal = yRotate;
+    let yVal = xRotate;
+
+    xdeg = -360 * xVal + 180;
+    ydeg = 360 * yVal + 90;
+    xdegstring = xdeg + 'deg';
+    ydegstring = ydeg + 'deg';
+    
+    xvis.innerHTML = xdegstring;
+    yvis.innerHTML = ydegstring;
+    
+    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
+    
+    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
         loveit.className = 'loveit show';
-      }else{
+    }else{
         loveit.className = 'loveit';  
-      
     }
 }
 
