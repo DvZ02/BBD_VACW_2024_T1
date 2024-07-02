@@ -7,6 +7,7 @@ const magOutput = document.getElementById("magnitude");
 //get the canvas
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+let canvasWidth = 0;
 
 function getOrientation() {
     const rawData = getPhoneData()
@@ -84,6 +85,13 @@ function run() {
         magOutput.innerText = magnitude;
 
         updateScreen(xNorm, yNorm);
+
+        let norm = {
+            x: xNorm,
+            y: yNorm
+        }
+
+        return norm;
     });
 
     gyroscope.start();
@@ -91,68 +99,35 @@ function run() {
 
 function initializeCanvas() {
     //get the windows width
-    let width = window.innerWidth;
+    canvasWidth = window.innerWidth / 2;
     
     //set the canvas size
-    context.canvas.width = width;
-    context.canvas.height = width; 
+    context.canvas.width = canvasWidth;
+    context.canvas.height = canvasWidth; 
 }
 
+function updateScreen(xVal, yVal) {
 
+    //calculate the origin
+    let x0 = canvasWidth / 2;
+    let y0 = canvasWidth / 2;
 
-run();
+    //calaculate the distances
+    let xEnd = Math.round(xVal * (x0) + x0);
+    let yEnd = Math.round(-yVal * (y0) + y0);
 
-/*
-function updateGyro() {
+    //draw the line
+    context.fillStyle = '#ff0303';
+
+    context.moveTo(x0, y0);
+    context.lineTo(xEnd, yEnd);
+    context.stroke();
+
 
 }
 
+initializeCanvas();
+updateScreen(.9, .05)
 
 
-function getAccel() {
-    //console.log("permissions button pressed");
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              // do something with event
-              xOutput.innerHTML = event.acceleration.x.toFixed(2);
-              yOutput.innerHTML = event.acceleration.y.toFixed(2);
-              zOutput.innerHTML = event.acceleration.z.toFixed(2);
-              // updateState.innerHTML = "Started motion sensing";
-  
-            });
-          }
-        })
-        .catch(console.error);
-      //return (acc_magnitude);
-      //alert_disqualify(acc_magnitude);
-    } else {
-      // alert_disqualify(updateReadings())
-      // non iOS 13+
-      //updateReadings();
-      gyro = new GyroScope({ frequency: 60 });
-      gyro.addEventListener("reading", () => {
-        xOutput.innerHTML = gyro.x;
-        yOutput.innerHTML = gyro.y;
-        zOutput.innerHTML = gyro.z;
-      });
-      gyro.start();
-    }
-}
-  
-// function setAcc(){
-//   custAcc = document.getElementById("customAcc").value;
-//   console.log("Acc set to " + custAcc);
-// }
-navigator.permissions.query({ name: "accelerometer" }).then((result) => {
-    if (result.state === "denied") {
-      console.log("Permission to use accelerometer sensor is denied.");
-      return;
-    }
-    // Use the sensor.
-    setInterval(() => {
-        getAccel();
-    }, 500);
-});*/
+//run();
