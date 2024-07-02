@@ -115,8 +115,8 @@ function updateBall() {
     drawBall();
 
     // Update ball position
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+    ball.x += ball.dx / 1000;
+    ball.y += ball.dy / 1000;
 
     // Check for collision with walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
