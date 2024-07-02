@@ -1,4 +1,4 @@
-const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('https://tilt-3596.onrender.com');
 // const socket = new io('http://localhost:8000');
 
 //get the direction display elements
@@ -94,7 +94,7 @@ function run() {
             y: yNorm
         }
 
-        socket.emit("gyroData", norm);
+        // socket.emit("gyroData", norm);
 
         return norm;
 
