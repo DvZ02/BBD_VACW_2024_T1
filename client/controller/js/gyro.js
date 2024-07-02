@@ -94,7 +94,7 @@ function run() {
             y: yNorm
         }
 
-        // socket.emit("gyroData", norm);
+        socket.emit("gyroData", norm);
 
         return norm;
 
