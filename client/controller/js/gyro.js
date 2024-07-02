@@ -94,12 +94,55 @@ function run() {
     */
 
     //check that the device has a gyroscope
+    let sensor = new Gyroscope();
+    let x,y,z;
+
+    //start the sensor
+    sensor.start();
+
+    sensor.onreading = () => {
+        let gyroX = sensor.x;
+        let gyroY = sensor.y;
+
+        let xNorm = 0.0;
+        let yNorm = 0.0;
+
+        let magnitude = 1;
+
+        if (gyroX == 0.0) {
+            xNorm = 0.0;
+            yNorm = 1.0;
+        } else if (gyroY == 0.0) {
+            yNorm = 0.0;
+            xNorm = 1.0;
+        } else {
+            let magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+            xNorm = gyroX / magnitude;
+            yNorm = gyroY / magnitude;    
+        }
+
+        xOutput.innerText = xNorm;
+        yOutput.innerText = yNorm;
+        magOutput.innerText = magnitude;
+
+        //updateScreen(xNorm, yNorm);
+        handleRotate(xNorm, yNorm);
+
+        let norm = {
+            x: xNorm,
+            y: yNorm
+        }
+
+        socket.emit("gyroData", norm);
+    }
+
 
     //handle the normal people
+    /*
     window.addEventListener('deviceorientation', (event) => {
 
-        let gyroX = event.beta * 2;
-        let gyroY = event.gamma * 2;
+        let gyroX = event.beta;
+        let gyroY = event.gamma;
 
         let xNorm = 0.0;
         let yNorm = 0.0;
@@ -135,6 +178,7 @@ function run() {
         return norm;
 
     })
+    */
 }
 
 var sphere = document.querySelector('.sphere'),
