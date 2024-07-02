@@ -198,8 +198,8 @@ function handleRotate(xRotate, yRotate){
     let xVal = yRotate;
     let yVal = xRotate;
 
-    xdeg = -360 * xVal + 180;
-    ydeg = 360 * yVal + 90;
+    xdeg = -180 * xVal;
+    ydeg = 180 * yVal;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';
     
