@@ -1,4 +1,6 @@
 const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
+
 
 function signup(){
     let username = document.getElementById("username").value;
@@ -9,8 +11,8 @@ function signup(){
         let serverResponse = JSON.parse(data);
         if(serverResponse.result){
             // window.location.href = "lobby.html";
-            username.value = "";
-            document.getElementsByClassName("waiting").style.display = "block";
+            document.getElementById("join").style.display = "none";
+            document.getElementsByClassName("waiting")[0].style.display = "block";
         }
     });
 }
