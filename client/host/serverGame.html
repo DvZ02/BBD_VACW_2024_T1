@@ -5,11 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
     <link rel="stylesheet" href="css/serverGame.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="container">
-        <canvas id="canvas" width="500px" height="500px"></canvas>
+    <h1>TILT</h1>
+    <div class="container"> 
+        <div class="players-container">
+            <ul id="players">
+                <li id="player1">Player 1</li>
+                <li id="player2">Player 2</li>
+            </ul>
+        </div>
+        <div class="map-container">
+            <div id="container">
+                <canvas id="canvas" width="500px" height="500px"></canvas>
+            </div>
+        </div>
     </div>
-    <script src="js/maze.js"></script>
+
 </body>
+
+
+<script src="js/maze.js"></script>
 </html>
