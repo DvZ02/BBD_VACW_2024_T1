@@ -10,6 +10,10 @@ h1{
     font-size: 36px;
 }
 
+h3{
+    font-size: 30px;
+}
+
 img{
     width: 13svw;
     height: 25svh;
@@ -36,7 +40,7 @@ p{
     background-color: #12F496;
     text-decoration: none;
     border-radius: 2%;
-    font-size: 16px;
+    font-size: 20px;
     font-family: "Press Start 2P", system-ui;
     color: white;
 }
