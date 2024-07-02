@@ -53,15 +53,6 @@ body{
     background-color: black;
 }
 
-#player-1{
-    color: #12F436;
-}
-#player-2{
-    color: #20CAFF;
-}
-#player-3{
-    color: #FB8F10;
-}
-#player-4{
-    color: #DE13C9;
+td{
+    height: 10%;
 }

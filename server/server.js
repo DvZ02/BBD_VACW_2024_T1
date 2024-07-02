@@ -87,6 +87,8 @@ io.on('connection',  (socket) => {
         else{
             let player = {
                 playerUsername: playerToAdd.playerUsername,
+                score: 0,
+                contribution: 0,
                 color: colors[playersDB.length]
             }
             playersDB.push(player); 
@@ -94,8 +96,7 @@ io.on('connection',  (socket) => {
             socket.broadcast.emit("PlayerJoinded", JSON.stringify({
                 player: playerToAdd.playerUsername, 
                 color: colors[playersDB.length-1]
-            })); 
-            console.log(playersDB);
+            }));  
         }
     });
 
