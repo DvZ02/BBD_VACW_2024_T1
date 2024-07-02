@@ -24,3 +24,8 @@ socket.on("PlayerJoinded", (data) =>{
     playerElement.style.color = color;
     document.getElementById("players").appendChild(playerElement);
 });
+
+function startGame(){
+    // socket.emit("StartGame");
+    window.location.href = "serverGame.html";
+}
