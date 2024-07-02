@@ -60,7 +60,7 @@ function run() {
     //handle the normal people
     window.addEventListener('deviceorientation', (event) => {
 
-        let gyroX = event.alpha;
+        let gyroX = event.alpha * 2;
         let gyroY = event.gamma * 2;
 
         let xNorm = 0.0;
@@ -91,6 +91,8 @@ function run() {
             x: xNorm,
             y: yNorm
         }
+
+        socket.emit("gyroData", norm);
 
         return norm;
 
