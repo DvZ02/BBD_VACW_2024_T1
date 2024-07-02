@@ -107,4 +107,8 @@ io.on('connection',  (socket) => {
     socket.on("RequestPlayers", () =>{
         socket.emit("PlayingPlayers", JSON.stringify({players: playersDB}));
     }); 
+
+    socket.on("GyroData", (data) =>{
+        socket.broadcast.emit("MoveBall", data);
+    });
 });
