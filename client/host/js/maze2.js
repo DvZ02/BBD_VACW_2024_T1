@@ -92,8 +92,8 @@ function drawWalls() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + ball.dx
-    let nextBally = ball.y + ball.dy
+    let nextBallx = ball.x + (ball.dx / 1000);
+    let nextBally = ball.y + (ball.dy / 1000);
 
     // [right, left, down, top]
     let pixels = [ctx.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, ctx.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, ctx.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, ctx.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
