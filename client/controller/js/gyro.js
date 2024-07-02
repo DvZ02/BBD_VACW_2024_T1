@@ -98,7 +98,7 @@ function run() {
     //handle the normal people
     window.addEventListener('deviceorientation', (event) => {
 
-        let gyroX = event.alpha * 2;
+        let gyroX = event.beta * 2;
         let gyroY = event.gamma * 2;
 
         let xNorm = 0.0;
@@ -135,51 +135,8 @@ function run() {
         return norm;
 
     })
-
-    /*
-    navigator.permissions.query({ name: "gyroscope" }).then((result) => {
-        if (result.state === "denied") {
-        info.innerText = "Permission to use gryroscope sensor is denied.";
-        return;
-        }
-        // Use the sensor.
-        
-    });
-
-    gyroscope.start();*/
-}
-/*
-function initializeCanvas() {
-    //get the windows width
-    canvasWidth = window.innerWidth / 2;
-    
-    //set the canvas size
-    context.canvas.width = canvasWidth;
-    context.canvas.height = canvasWidth; 
 }
 
-function updateScreen(xVal, yVal) {
-
-    //calculate the origin
-    let x0 = canvasWidth / 2;
-    let y0 = canvasWidth / 2;
-
-    //calaculate the distances
-    let xEnd = Math.round(xVal * (x0) + x0);
-    let yEnd = Math.round(-yVal * (y0) + y0);
-
-    //draw the line
-    context.fillStyle = '#ff0303';
-
-    context.moveTo(x0, y0);
-    context.lineTo(xEnd, yEnd);
-    context.stroke();
-
-
-}*/
-
-//initializeCanvas();
-//updateScreen(.9, .05)
 var sphere = document.querySelector('.sphere'),
     spherePerspective = document.querySelector('.sphere-perspective'),
     followElement = document.querySelector('.follow'),
@@ -190,47 +147,7 @@ var sphere = document.querySelector('.sphere'),
     follow = true,
     perspective = 2000;
 
-//document.body.onmousemove = handleRotate;
-/*
-document.addEventListener('onmousemove', handleRotate);
-
-window.onkeydown = function(e){
-  if(e.which === 70){
-    follow = !follow;
-  }
-  followElement.checked = !followElement.checked;
-};
-
-followElement.onchange = function(e){
-  console.log(e);
-  if(e.target.checked)
-    follow = true;
-  else
-    follow = false;  
-};*/
-
 var xdeg,xdegstring,ydeg,ydegstring;
-/*
-function handleRotate(e){
-    document.getElementById('info').innerText = 'Rotation:  ' + e;
-  if(follow){
-    xdeg = -360 * e.x / document.body.clientWidth + 180;
-    ydeg = 360 * e.y / document.body.clientHeight + 90;
-    xdegstring = xdeg + 'deg';
-    ydegstring = ydeg + 'deg';
-    
-    xvis.innerHTML = xdegstring;
-    yvis.innerHTML = ydegstring;
-    
-    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
-    
-    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
-      loveit.className = 'loveit show';
-    }else{
-      loveit.className = 'loveit';  
-    }
-  }
-}*/
 
 function handleRotate(xRotate, yRotate){
 
@@ -238,7 +155,7 @@ function handleRotate(xRotate, yRotate){
     let xVal = yRotate;
     let yVal = xRotate;
 
-    xdeg = -360 * xVal;
+    xdeg = -180 * xVal;
     ydeg = 180 * yVal;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';
