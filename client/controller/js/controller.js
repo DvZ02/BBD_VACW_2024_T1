@@ -1,4 +1,4 @@
-const socket = new io('http://localhost:8000');
+const socket = new io('https://tilt-3596.onrender.com');
 
 async function signup(){
     let username = document.getElementById("username").value;

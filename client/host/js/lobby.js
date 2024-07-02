@@ -1,4 +1,4 @@
-const socket = new io('http://localhost:8000');
+const socket = new io('https://tilt-3596.onrender.com');
 
 socket.on("PlayerJoinded", (data) =>{
     let player = JSON.parse(data);
