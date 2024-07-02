@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./css/gyro.css">
 </head>
 <body>
-    <p style="text-align: center;">
+    <p class="hidden" style="text-align: center;">
         X: <span id="xCoOrd"> </span>
         Y: <span id="yCoOrd"> </span>
         Magnitude: <span id="magnitude"> </span>
@@ -18,7 +18,7 @@
     </p>
 
     <!-- <canvas id="canvas"></canvas> -->
-    <div>
+      <div class="hidden">
         Follow mouse
         <input checked='checked' class='follow' type='checkbox'>
         <span>
@@ -26,21 +26,21 @@
         </span>
       </div>
       <br>
-      <div>
+      <div class="hidden">
         x
         <span class='xvis'>
           0deg
         </span>
       </div>
       <br>
-      <div>
+      <div class="hidden">
         y
         <span class='yvis'>
           0deg
         </span>
       </div>
       <br>
-      <div>
+      <div class="hidden">
         perspective
         <span class='perspective'>
           2000
