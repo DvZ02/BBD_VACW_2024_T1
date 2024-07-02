@@ -60,10 +60,12 @@ function run() {
     window.addEventListener('deviceorientation', (event) => {
 
         let gyroX = event.alpha;
-        let gyroY = event.beta;
+        let gyroY = event.gamma;
 
         let xNorm = 0.0;
         let yNorm = 0.0;
+
+        let magnitude = 1;
 
         if (gyroX == 0.0) {
             xNorm = 0.0;
@@ -134,8 +136,8 @@ function updateScreen(xVal, yVal) {
 
 }
 
-initializeCanvas();
-updateScreen(.9, .05)
+//initializeCanvas();
+//updateScreen(.9, .05)
 
 
-//run();
+run();
