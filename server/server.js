@@ -20,7 +20,7 @@ let ballX=0, ballY=0, ballZ=0;
 let playersSession=[]; // For now this is a 2D array which contains the usernames for the current game session
 let playersDB = []
 
-let colors = ["blue", "pink", "green", "orange"]
+let colors = ["green", "blue", "orange", "pink"]
 
 io.on('connection',  (socket) => {
     console.log('New client connected');
@@ -35,9 +35,9 @@ io.on('connection',  (socket) => {
         ballX += clientGyroParams.x;
         ballY += clientGyroParams.y;
         ballZ += clientGyroParams.z;
-        console.log(clientGyroParams.playerUsername);
+        console.log(clientGyroParams.playerUsername); 
     });
-
+ 
     /**
      * Used to create a new session
      * Param: Expects a struct which has the playerUsername
@@ -78,20 +78,33 @@ io.on('connection',  (socket) => {
     socket.on("RequestSignUp",(data) =>{
         let playerToAdd = JSON.parse(data);
         console.log(playerToAdd.playerUsername);
-        if(playersDB.includes(playerToAdd.playerUsername) || playersDB.length === 4){
+        if(playersDB.includes(playerToAdd.playerUsername) || playersDB.length === 4){ //Maybe add a emit for when full
             socket.emit("RequestSignUpResult", JSON.stringify({
                 result:false, 
                 message: "Denied"
             }));
         }
         else{
-            playersDB.push(playerToAdd.playerUsername); 
+            let player = {
+                playerUsername: playerToAdd.playerUsername,
+                score: 0,
+                contribution: 0,
+                color: colors[playersDB.length]
+            }
+            playersDB.push(player); 
             socket.emit("RequestSignUpResult", JSON.stringify({result:true, message: "Granted"}));
             socket.broadcast.emit("PlayerJoinded", JSON.stringify({
                 player: playerToAdd.playerUsername, 
                 color: colors[playersDB.length-1]
-            })); 
+            }));  
         }
     });
-    //Most socket logic here
+
+    socket.on("StartGame", () =>{
+        socket.broadcast.emit("GameStarted", JSON.stringify({players: playersDB}));
+    });
+
+    socket.on("RequestPlayers", () =>{
+        socket.emit("PlayingPlayers", JSON.stringify({players: playersDB}));
+    }); 
 });

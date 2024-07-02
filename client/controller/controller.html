@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
     <link rel="stylesheet" href="./css/controller.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Enter Your Username</h1>
     <div class="user-info">
         <input type="text" id="username" placeholder="Username"></div></br>
         <button id="join" onclick="signup()">Join Game</button>
+    </div>
+    <div class="waiting">
+        <p class="wait">Joined succesfully</p>
+        <p class="wait">Waiting for host to start the game!</p>
     </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
