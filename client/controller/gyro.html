@@ -5,11 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyro Controller</title>
-    <script type = "module" src = "./js/gyro.js"></script>
     <link rel="stylesheet" href="./css/gyro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p style="text-align: center;">
+  <div class="player-container">
+    <h1 id="username">Player 1</h1>
+  </div>
+    
+    <p class="hidden" style="text-align: center;">
         X: <span id="xCoOrd"> </span>
         Y: <span id="yCoOrd"> </span>
         Magnitude: <span id="magnitude"> </span>
@@ -17,6 +23,147 @@
         info: <span id="info"> </span>
     </p>
 
-    <canvas id="canvas"></canvas>
+    <!-- <canvas id="canvas"></canvas> -->
+      <div class="hidden">
+        Follow mouse
+        <input checked='checked' class='follow' type='checkbox'>
+        <span>
+          <small>(use 'f' to toggle)</small>
+        </span>
+      </div>
+      <br>
+      <div class="hidden">
+        x
+        <span class='xvis'>
+          0deg
+        </span>
+      </div>
+      <br>
+      <div class="hidden">
+        y
+        <span class='yvis'>
+          0deg
+        </span>
+      </div>
+      <br>
+      <div class="hidden">
+        perspective
+        <span class='perspective'>
+          2000
+        </span>
+        <span>
+          <small>(use your mousewheel)</small>
+        </span>
+      </div>
+      <br>
+      <div class='loveit'></div>
+      <br>
+      <div class='sphere-perspective'>
+        <div class='sphere'>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+          <div class='face face-vert'></div>
+        </div>
+      </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script type = "module" src = "./js/gyro.js"></script>
+
 </html>

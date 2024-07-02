@@ -2,6 +2,51 @@ body{
     background-color: #1E1E1E;
     text-align: center;
     color: white;
-    font-family: sans-serif;
-    font-size: 25px;
+    font-family: "Press Start 2P", system-ui;
+    font-size: 16px;
+}
+
+h1{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    font-size: 4svh;
+    line-height: 2;
+}
+
+.waiting{
+    display: none;
+}
+
+#username{
+    font-size: 16px;
+    height: 5svh;
+    width: 80svw;  
+    margin-top: 15%;  
+    margin-bottom: 15%;   
+    font-family: "Press Start 2P", system-ui;
+}
+
+.wait{
+    font-size: 3svh;
+    margin-top: 8%;
+    /* margin-bottom: 10%; */
+    margin-left: 5%;
+    margin-right: auto;
+    line-height: 2;
+}
+
+#join{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 15svh;
+    width: 80vw;   
+    background-color: #12F496;
+    text-decoration: none;
+    border-radius: 2%;
+    font-size: 4svh;
+    font-family: "Press Start 2P", system-ui;
+    color: white;
 }

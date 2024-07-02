@@ -2,9 +2,31 @@ body{
     background-color: #1E1E1E;
     text-align: center;
     color: white;
-    font-family: sans-serif;
-    font-size: 25px;
+    font-family: "Press Start 2P", system-ui;
+    font-size: 16px;
 }
+
+h1{
+    font-size: 36px;
+}
+
+h3{
+    font-size: 30px;
+}
+
+img{
+    width: 13svw;
+    height: 25svh;
+}
+
+p{
+    font-size: 24px;
+}
+
+#timer-container{
+    display: none;
+}
+
 #genCode{
     width: 250px;
     height: 60px;
@@ -12,20 +34,17 @@ body{
     font-size: 20px;
 }
 #start{
-    width: 250px;
-    height: 60px;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 10svh;
+    width: 45svw;   
+    background-color: #12F496;
+    text-decoration: none;
+    border-radius: 2%;
     font-size: 20px;
-}
-.players .pl1{
-    color: #12F436;
-}
-.players .pl2{
-    color: #20CAFF;
-}
-.players .pl3{
-    color: #FB8F10;
-}
-.players .pl4{
-    color: #DE13C9;
+    font-family: "Press Start 2P", system-ui;
+    color: white;
 }

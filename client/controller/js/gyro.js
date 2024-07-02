@@ -1,3 +1,41 @@
+const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
+
+socket.emit("RequestPlayers");
+
+socket.on("PlayingPlayers", (players) =>{
+  let playerList = JSON.parse(players);
+  playerList.players.forEach(player => {
+    if(player.playerUsername === sessionStorage.getItem("username")){
+
+      let color;
+      switch(player.color){
+          case "pink":
+              color = "#DE13C9";
+              break;
+          case "blue":
+              color = "#20CAFF";
+              break;
+          case "green":
+              color = "#12F436";
+              break;
+          case "orange":
+              color = "#FB8F10";
+              break;
+      };
+
+      document.getElementById("username").innerHTML = player.playerUsername;
+      document.getElementById("username").style.color = color;
+      
+
+      
+      let gyroPin = document.getElementsByClassName("face");
+      for(let i = 0; i < gyroPin.length; i++){
+        gyroPin[i].style.backgroundColor = color;
+      }
+    }
+  });
+});
 
 //get the direction display elements
 const xOutput = document.getElementById("xCoOrd");
@@ -5,9 +43,10 @@ const yOutput = document.getElementById("yCoOrd");
 const magOutput = document.getElementById("magnitude");
 
 //get the canvas
+/*
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-let canvasWidth = 0;
+let canvasWidth = 0;*/
 
 function getOrientation() {
     const rawData = getPhoneData()
@@ -50,10 +89,54 @@ function run() {
 
     //check if the device support gyro
     
-    let gyroscope = new Gyroscope( {frequency: 1} );
+    /*let gyroscope = new Gyroscope( {frequency: 1} );
     info.innerText = "gyro initialised";
+    */
 
+    //check that the device has a gyroscope
 
+    //handle the normal people
+    window.addEventListener('deviceorientation', (event) => {
+
+        let gyroX = event.alpha * 2;
+        let gyroY = event.gamma * 2;
+
+        let xNorm = 0.0;
+        let yNorm = 0.0;
+
+        let magnitude = 1;
+
+        if (gyroX == 0.0) {
+            xNorm = 0.0;
+            yNorm = 1.0;
+        } else if (gyroY == 0.0) {
+            yNorm = 0.0;
+            xNorm = 1.0;
+        } else {
+            let magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+            xNorm = gyroX / magnitude;
+            yNorm = gyroY / magnitude;    
+        }
+
+        xOutput.innerText = xNorm;
+        yOutput.innerText = yNorm;
+        magOutput.innerText = magnitude;
+
+        //updateScreen(xNorm, yNorm);
+        handleRotate(xNorm, yNorm);
+
+        let norm = {
+            x: xNorm,
+            y: yNorm
+        }
+
+        socket.emit("gyroData", norm);
+
+        return norm;
+
+    })
+
+    /*
     navigator.permissions.query({ name: "gyroscope" }).then((result) => {
         if (result.state === "denied") {
         info.innerText = "Permission to use gryroscope sensor is denied.";
@@ -63,40 +146,9 @@ function run() {
         
     });
 
-    gyroscope.addEventListener("reading", (e) => {
-
-        let xNorm = 0.0;
-        let yNorm = 0.0;
-
-        if (gyroscope.x == 0.0) {
-            xNorm = 0.0;
-            yNorm = 1.0;
-        } else if (gyroscope.y == 0.0) {
-            yNorm = 0.0;
-            xNorm = 1.0;
-        } else {
-            let magnitude = Math.sqrt((gyroscope.x * gyroscope.x) + (gyroscope.y * gyroscope.y));
-            xNorm = gyroscope.x / magnitude;
-            yNorm = gyroscope.y / magnitude;    
-        }
-
-        xOutput.innerText = xNorm;
-        yOutput.innerText = yNorm;
-        magOutput.innerText = magnitude;
-
-        updateScreen(xNorm, yNorm);
-
-        let norm = {
-            x: xNorm,
-            y: yNorm
-        }
-
-        return norm;
-    });
-
-    gyroscope.start();
+    gyroscope.start();*/
 }
-
+/*
 function initializeCanvas() {
     //get the windows width
     canvasWidth = window.innerWidth / 2;
@@ -124,10 +176,95 @@ function updateScreen(xVal, yVal) {
     context.stroke();
 
 
+}*/
+
+//initializeCanvas();
+//updateScreen(.9, .05)
+var sphere = document.querySelector('.sphere'),
+    spherePerspective = document.querySelector('.sphere-perspective'),
+    followElement = document.querySelector('.follow'),
+    xvis = document.querySelector('.xvis'),
+    yvis = document.querySelector('.yvis'),
+    pvis = document.querySelector('.perspective'),
+    loveit = document.querySelector('.loveit'),
+    follow = true,
+    perspective = 2000;
+
+//document.body.onmousemove = handleRotate;
+/*
+document.addEventListener('onmousemove', handleRotate);
+
+window.onkeydown = function(e){
+  if(e.which === 70){
+    follow = !follow;
+  }
+  followElement.checked = !followElement.checked;
+};
+
+followElement.onchange = function(e){
+  console.log(e);
+  if(e.target.checked)
+    follow = true;
+  else
+    follow = false;  
+};*/
+
+var xdeg,xdegstring,ydeg,ydegstring;
+/*
+function handleRotate(e){
+    document.getElementById('info').innerText = 'Rotation:  ' + e;
+  if(follow){
+    xdeg = -360 * e.x / document.body.clientWidth + 180;
+    ydeg = 360 * e.y / document.body.clientHeight + 90;
+    xdegstring = xdeg + 'deg';
+    ydegstring = ydeg + 'deg';
+    
+    xvis.innerHTML = xdegstring;
+    yvis.innerHTML = ydegstring;
+    
+    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
+    
+    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
+      loveit.className = 'loveit show';
+    }else{
+      loveit.className = 'loveit';  
+    }
+  }
+}*/
+
+function handleRotate(xRotate, yRotate){
+
+    //swap x and y because screen will be landscape
+    let xVal = yRotate;
+    let yVal = xRotate;
+
+    xdeg = -360 * xVal;
+    ydeg = 180 * yVal;
+    xdegstring = xdeg + 'deg';
+    ydegstring = ydeg + 'deg';
+    
+    xvis.innerHTML = xdegstring;
+    yvis.innerHTML = ydegstring;
+    
+    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
+    
+    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
+        loveit.className = 'loveit show';
+    }else{
+        loveit.className = 'loveit';  
+    }
 }
 
-initializeCanvas();
-updateScreen(.9, .05)
+
+Element.prototype.prefixedStyle = function(p,style){
+  var prefixes = ['webkit','moz','o'],
+      i = 0;
+  p = p.charAt(0).toUpperCase() + p.slice(1);
+  while (Element.prefix = prefixes[i++]){
+    this.style[Element.prefix + p] = style;
+  }
+};
 
 
-//run();
+
+run();
