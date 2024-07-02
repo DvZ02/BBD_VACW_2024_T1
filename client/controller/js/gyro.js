@@ -37,6 +37,40 @@ function getPhoneData() {
     return data;
 }
 
+function getGyro(event) {
+
+    let gyroX = event.alpha;
+    let gyroY = event.beta;
+
+    let xNorm = 0.0;
+    let yNorm = 0.0;
+
+    if (gyroX == 0.0) {
+        xNorm = 0.0;
+        yNorm = 1.0;
+    } else if (gyroY == 0.0) {
+        yNorm = 0.0;
+        xNorm = 1.0;
+    } else {
+        let magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+        xNorm = gyroX / magnitude;
+        yNorm = gyroY / magnitude;    
+    }
+
+    xOutput.innerText = xNorm;
+    yOutput.innerText = yNorm;
+    magOutput.innerText = magnitude;
+
+    updateScreen(xNorm, yNorm);
+
+    let norm = {
+        x: xNorm,
+        y: yNorm
+    }
+
+    return norm;
+}
+
 //getOrientation()
 function run() {
 
@@ -50,10 +84,64 @@ function run() {
 
     //check if the device support gyro
     
-    let gyroscope = new Gyroscope( {frequency: 1} );
+    /*let gyroscope = new Gyroscope( {frequency: 1} );
     info.innerText = "gyro initialised";
+    */
 
+    //check that the device has a gyroscope
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
 
+        //Request permission from rich people(iPhone)
+        DeviceMotionEvent.requestPermission().then((response) => {
+            if (response === 'granted') {
+                window.addEventListener('devicemotion', getGyro);
+            } else {
+                console.error('You dont want to play our game :(');
+            }
+        }).catch(console.error);
+    } else {
+
+        //handle the normal people
+        window.addEventListener('deviceorientation', getGyro)
+        /*
+        window.addEventListener('deviceorientation', (event) => {
+
+            let gyroX = event.alpha;
+            let gyroY = event.beta;
+
+            let xNorm = 0.0;
+            let yNorm = 0.0;
+
+            if (gyroX == 0.0) {
+                xNorm = 0.0;
+                yNorm = 1.0;
+            } else if (gyroY == 0.0) {
+                yNorm = 0.0;
+                xNorm = 1.0;
+            } else {
+                let magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+                xNorm = gyroX / magnitude;
+                yNorm = gyroY / magnitude;    
+            }
+
+            xOutput.innerText = xNorm;
+            yOutput.innerText = yNorm;
+            magOutput.innerText = magnitude;
+
+            updateScreen(xNorm, yNorm);
+
+            let norm = {
+                x: xNorm,
+                y: yNorm
+            }
+
+            return norm;
+
+        })*/
+
+    } 
+
+    /*
     navigator.permissions.query({ name: "gyroscope" }).then((result) => {
         if (result.state === "denied") {
         info.innerText = "Permission to use gryroscope sensor is denied.";
@@ -63,38 +151,7 @@ function run() {
         
     });
 
-    gyroscope.addEventListener("reading", (e) => {
-
-        let xNorm = 0.0;
-        let yNorm = 0.0;
-
-        if (gyroscope.x == 0.0) {
-            xNorm = 0.0;
-            yNorm = 1.0;
-        } else if (gyroscope.y == 0.0) {
-            yNorm = 0.0;
-            xNorm = 1.0;
-        } else {
-            let magnitude = Math.sqrt((gyroscope.x * gyroscope.x) + (gyroscope.y * gyroscope.y));
-            xNorm = gyroscope.x / magnitude;
-            yNorm = gyroscope.y / magnitude;    
-        }
-
-        xOutput.innerText = xNorm;
-        yOutput.innerText = yNorm;
-        magOutput.innerText = magnitude;
-
-        updateScreen(xNorm, yNorm);
-
-        let norm = {
-            x: xNorm,
-            y: yNorm
-        }
-
-        return norm;
-    });
-
-    gyroscope.start();
+    gyroscope.start();*/
 }
 
 function initializeCanvas() {
