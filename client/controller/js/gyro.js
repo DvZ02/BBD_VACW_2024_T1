@@ -170,6 +170,7 @@ followElement.onchange = function(e){
 };*/
 
 var xdeg,xdegstring,ydeg,ydegstring;
+/*
 function handleRotate(e){
     document.getElementById('info').innerText = 'Rotation:  ' + e;
   if(follow){
@@ -183,18 +184,15 @@ function handleRotate(e){
     
     sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
     
-    /*loveit*/
     if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
       loveit.className = 'loveit show';
     }else{
       loveit.className = 'loveit';  
     }
   }
-}
+}*/
 
-/*
 function handleRotate(xRotate, yRotate){
-    if(follow){
       xdeg = -360 * xRotate + 180;
       ydeg = 360 * yRotate + 90;
       xdegstring = xdeg + 'deg';
@@ -209,9 +207,9 @@ function handleRotate(xRotate, yRotate){
         loveit.className = 'loveit show';
       }else{
         loveit.className = 'loveit';  
-      }
+      
     }
-  }*/
+}
 
 
 Element.prototype.prefixedStyle = function(p,style){
