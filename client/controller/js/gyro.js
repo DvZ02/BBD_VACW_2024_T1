@@ -94,12 +94,13 @@ function run() {
     */
 
     //check that the device has a gyroscope
+    /*
     let sensor = new Gyroscope();
     let x,y,z;
 
     //start the sensor
     sensor.start();
-
+    
     sensor.onreading = () => {
         let gyroX = sensor.x;
         let gyroY = sensor.y;
@@ -135,14 +136,13 @@ function run() {
 
         socket.emit("gyroData", norm);
     }
-
+    */
 
     //handle the normal people
-    /*
     window.addEventListener('deviceorientation', (event) => {
 
         let gyroX = event.beta;
-        let gyroY = event.gamma;
+        let gyroY = event.alpha;
 
         let xNorm = 0.0;
         let yNorm = 0.0;
@@ -156,7 +156,7 @@ function run() {
             yNorm = 0.0;
             xNorm = 1.0;
         } else {
-            let magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+            magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
             xNorm = gyroX / magnitude;
             yNorm = gyroY / magnitude;    
         }
@@ -178,7 +178,6 @@ function run() {
         return norm;
 
     })
-    */
 }
 
 var sphere = document.querySelector('.sphere'),
@@ -194,11 +193,7 @@ var sphere = document.querySelector('.sphere'),
 var xdeg,xdegstring,ydeg,ydegstring;
 
 function handleRotate(xRotate, yRotate){
-
-    //swap x and y because screen will be landscape
-    let xVal = yRotate;
-    let yVal = xRotate;
-
+    
     xdeg = -180 * xVal;
     ydeg = 180 * yVal;
     xdegstring = xdeg + 'deg';
