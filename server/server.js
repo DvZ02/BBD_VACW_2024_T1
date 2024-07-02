@@ -35,9 +35,9 @@ io.on('connection',  (socket) => {
         ballX += clientGyroParams.x;
         ballY += clientGyroParams.y;
         ballZ += clientGyroParams.z;
-        console.log(clientGyroParams.playerUsername);
+        console.log(clientGyroParams.playerUsername); 
     });
-
+ 
     /**
      * Used to create a new session
      * Param: Expects a struct which has the playerUsername
@@ -78,7 +78,7 @@ io.on('connection',  (socket) => {
     socket.on("RequestSignUp",(data) =>{
         let playerToAdd = JSON.parse(data);
         console.log(playerToAdd.playerUsername);
-        if(playersDB.includes(playerToAdd.playerUsername) || playersDB.length === 4){
+        if(playersDB.includes(playerToAdd.playerUsername) || playersDB.length === 4){ //Maybe add a emit for when full
             socket.emit("RequestSignUpResult", JSON.stringify({
                 result:false, 
                 message: "Denied"
@@ -93,5 +93,9 @@ io.on('connection',  (socket) => {
             })); 
         }
     });
-    //Most socket logic here
+
+    socket.on("StartGame", () =>{
+        socket.broadcast.emit("GameStarted", JSON.stringify({players: playersDB}));
+    });
+
 });

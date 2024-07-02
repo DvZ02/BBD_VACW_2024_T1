@@ -1,5 +1,5 @@
-const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+// const socket = new io('https://tilt-3596.onrender.com');
+const socket = new io('http://localhost:8000');
 
 
 function signup(){
@@ -16,3 +16,7 @@ function signup(){
         }
     });
 }
+
+socket.on('GameStarted', (players) =>{
+    window.location.href = "./gyro.html";
+});
