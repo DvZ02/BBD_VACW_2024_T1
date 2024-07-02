@@ -15,6 +15,10 @@ img{
     height: 25svh;
 }
 
+p{
+    font-size: 24px;
+}
+
 #genCode{
     width: 250px;
     height: 60px;
@@ -34,4 +38,5 @@ img{
     border-radius: 2%;
     font-size: 16px;
     font-family: "Press Start 2P", system-ui;
+    color: white;
 }
