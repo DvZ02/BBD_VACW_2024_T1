@@ -17,9 +17,16 @@ a{
     width: 60svw;   
     background-color: #12F496;
     text-decoration: none;
+    border-radius: 2%;
 }
 
-a:visited, a:hover, a:focus, a:active {
+a:visited, a:hover, a:active {
     color: inherit; /* Ensure the color remains the same in all states */
     text-decoration: none; /* Ensure the underline is removed in all states */
+}
+
+a:hover{
+    font-size: 35px;
+    height: 33svh;
+    width: 63svw;
 }
