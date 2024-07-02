@@ -15,6 +15,7 @@ body{
     font-size: 20px;
 }
 
+
 .container {
     display: flex;
     height: 85svh;
@@ -37,9 +38,11 @@ body{
     margin-top: 1%;
 }
 
+
 #players{
     width: 90%;
     height: 100%;
+    margin-left: 4%;
 }
 
 #canvas {
