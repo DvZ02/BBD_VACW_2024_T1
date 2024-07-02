@@ -1,5 +1,41 @@
-// const socket = new io('https://tilt-3596.onrender.com');
-const socket = new io('http://localhost:8000');
+const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
+
+socket.emit("RequestPlayers");
+
+socket.on("PlayingPlayers", (players) =>{
+  let playerList = JSON.parse(players);
+  playerList.players.forEach(player => {
+    if(player.playerUsername === sessionStorage.getItem("username")){
+
+      let color;
+      switch(player.color){
+          case "pink":
+              color = "#DE13C9";
+              break;
+          case "blue":
+              color = "#20CAFF";
+              break;
+          case "green":
+              color = "#12F436";
+              break;
+          case "orange":
+              color = "#FB8F10";
+              break;
+      };
+
+      document.getElementById("username").innerHTML = player.playerUsername;
+      document.getElementById("username").style.color = color;
+      
+
+      
+      let gyroPin = document.getElementsByClassName("face");
+      for(let i = 0; i < gyroPin.length; i++){
+        gyroPin[i].style.backgroundColor = color;
+      }
+    }
+  });
+});
 
 //get the direction display elements
 const xOutput = document.getElementById("xCoOrd");
@@ -202,7 +238,7 @@ function handleRotate(xRotate, yRotate){
     let xVal = yRotate;
     let yVal = xRotate;
 
-    xdeg = -180 * xVal;
+    xdeg = -360 * xVal;
     ydeg = 180 * yVal;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';

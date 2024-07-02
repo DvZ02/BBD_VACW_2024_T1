@@ -11,6 +11,7 @@ function signup(){
         let serverResponse = JSON.parse(data);
         if(serverResponse.result){
             // window.location.href = "lobby.html";
+            sessionStorage.setItem("username", username);
             document.getElementById("join").style.display = "none";
             document.getElementsByClassName("waiting")[0].style.display = "block";
         }
