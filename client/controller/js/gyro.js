@@ -134,8 +134,8 @@ function updateScreen(xVal, yVal) {
 
 }
 
-initializeCanvas();
-updateScreen(.9, .05)
+//initializeCanvas();
+//updateScreen(.9, .05)
 
 
-//run();
+run();
