@@ -10,6 +10,13 @@ body{
   display: none;
 }
 
+#username{
+  margin-top: 10%;
+  margin-bottom: 10%;
+  font-size: 4svh;
+  color: #12F436;
+}
+
 *, *:before, *:after {
     margin: 0;
     padding: 0;
