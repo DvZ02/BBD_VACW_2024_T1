@@ -149,7 +149,10 @@ function run() {
 
         let magnitude = 1;
 
-        if (gyroX == 0.0) {
+        if (gyroX == 0 && gyroY == 0) {
+            xNorm = 0.0;
+            yNorm = 0.0;
+        } else if (gyroX == 0.0) {
             xNorm = 0.0;
             yNorm = 1.0;
         } else if (gyroY == 0.0) {
