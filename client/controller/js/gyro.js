@@ -1,5 +1,5 @@
-// const socket = new io('https://tilt-3596.onrender.com');
-const socket = new io('http://localhost:8000');
+const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
 
 socket.emit("RequestPlayers");
 
@@ -94,12 +94,16 @@ function run() {
     */
 
     //check that the device has a gyroscope
+    /*
+    let sensor = new Gyroscope();
+    let x,y,z;
 
-    //handle the normal people
-    window.addEventListener('deviceorientation', (event) => {
-
-        let gyroX = event.alpha * 2;
-        let gyroY = event.gamma * 2;
+    //start the sensor
+    sensor.start();
+    
+    sensor.onreading = () => {
+        let gyroX = sensor.x;
+        let gyroY = sensor.y;
 
         let xNorm = 0.0;
         let yNorm = 0.0;
@@ -131,55 +135,54 @@ function run() {
         }
 
         socket.emit("gyroData", norm);
+    }
+    */
+
+    //handle the normal people
+    window.addEventListener('deviceorientation', (event) => {
+
+        let gyroX = event.beta;
+        let gyroY = event.alpha;
+
+        let xNorm = 0.0;
+        let yNorm = 0.0;
+
+        let magnitude = 1;
+
+        if (gyroX == 0 && gyroY == 0) {
+            xNorm = 0.0;
+            yNorm = 0.0;
+        } else if (gyroX == 0.0) {
+            xNorm = 0.0;
+            yNorm = 1.0;
+        } else if (gyroY == 0.0) {
+            yNorm = 0.0;
+            xNorm = 1.0;
+        } else {
+            magnitude = Math.sqrt((gyroX * gyroX) + (gyroY * gyroY));
+            xNorm = gyroX / magnitude;
+            yNorm = gyroY / magnitude;    
+        }
+
+        xOutput.innerText = xNorm;
+        yOutput.innerText = yNorm;
+        magOutput.innerText = magnitude;
+
+        //updateScreen(xNorm, yNorm);
+        handleRotate(xNorm, yNorm);
+
+        let norm = {
+            x: xNorm,
+            y: yNorm
+        }
+
+        socket.emit("GyroData", norm);
 
         return norm;
 
     })
-
-    /*
-    navigator.permissions.query({ name: "gyroscope" }).then((result) => {
-        if (result.state === "denied") {
-        info.innerText = "Permission to use gryroscope sensor is denied.";
-        return;
-        }
-        // Use the sensor.
-        
-    });
-
-    gyroscope.start();*/
-}
-/*
-function initializeCanvas() {
-    //get the windows width
-    canvasWidth = window.innerWidth / 2;
-    
-    //set the canvas size
-    context.canvas.width = canvasWidth;
-    context.canvas.height = canvasWidth; 
 }
 
-function updateScreen(xVal, yVal) {
-
-    //calculate the origin
-    let x0 = canvasWidth / 2;
-    let y0 = canvasWidth / 2;
-
-    //calaculate the distances
-    let xEnd = Math.round(xVal * (x0) + x0);
-    let yEnd = Math.round(-yVal * (y0) + y0);
-
-    //draw the line
-    context.fillStyle = '#ff0303';
-
-    context.moveTo(x0, y0);
-    context.lineTo(xEnd, yEnd);
-    context.stroke();
-
-
-}*/
-
-//initializeCanvas();
-//updateScreen(.9, .05)
 var sphere = document.querySelector('.sphere'),
     spherePerspective = document.querySelector('.sphere-perspective'),
     followElement = document.querySelector('.follow'),
@@ -190,56 +193,12 @@ var sphere = document.querySelector('.sphere'),
     follow = true,
     perspective = 2000;
 
-//document.body.onmousemove = handleRotate;
-/*
-document.addEventListener('onmousemove', handleRotate);
-
-window.onkeydown = function(e){
-  if(e.which === 70){
-    follow = !follow;
-  }
-  followElement.checked = !followElement.checked;
-};
-
-followElement.onchange = function(e){
-  console.log(e);
-  if(e.target.checked)
-    follow = true;
-  else
-    follow = false;  
-};*/
-
 var xdeg,xdegstring,ydeg,ydegstring;
-/*
-function handleRotate(e){
-    document.getElementById('info').innerText = 'Rotation:  ' + e;
-  if(follow){
-    xdeg = -360 * e.x / document.body.clientWidth + 180;
-    ydeg = 360 * e.y / document.body.clientHeight + 90;
-    xdegstring = xdeg + 'deg';
-    ydegstring = ydeg + 'deg';
-    
-    xvis.innerHTML = xdegstring;
-    yvis.innerHTML = ydegstring;
-    
-    sphere.prefixedStyle('transform','rotateY('+xdegstring+') rotateX('+ydegstring+')');
-    
-    if(Math.abs(xdeg) < 36 && ydeg < 126 && ydeg > 54){
-      loveit.className = 'loveit show';
-    }else{
-      loveit.className = 'loveit';  
-    }
-  }
-}*/
 
 function handleRotate(xRotate, yRotate){
-
-    //swap x and y because screen will be landscape
-    let xVal = yRotate;
-    let yVal = xRotate;
-
-    xdeg = -360 * xVal;
-    ydeg = 180 * yVal;
+    
+    xdeg = -180 * xRotate;
+    ydeg = 180 * yRotate;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';
     

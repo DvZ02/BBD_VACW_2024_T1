@@ -1,118 +1,52 @@
-// const container = document.getElementById('container');
-// const canvas = container.querySelector("#canvas");
-// const ctx = canvas.getContext('2d');
-// const width = canvas.width;
-// const height = canvas.height;
-// const cellSize = 20;
-// const cols = Math.floor(width / cellSize);
-// const rows = Math.floor(height / cellSize);
+const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
 
-// // Directions
-// const directions = {
-//     UP: { x: 0, y: -1 },
-//     DOWN: { x: 0, y: 1 },
-//     LEFT: { x: -1, y: 0 },
-//     RIGHT: { x: 1, y: 0 }
-// };
+let globalX = 0;
+let globalY = 0;
 
-// // Initialize the grid
-// let grid = [];
-// for (let y = 0; y < rows; y++) {
-//     let row = [];
-//     for (let x = 0; x < cols; x++) {
-//         row.push({ x: x, y: y, visited: false });
-//     }
-//     grid.push(row);
-// }
+socket.emit("RequestPlayers");
 
-// // Utility functions
-// function getRandomDirection() {
-//     const keys = Object.keys(directions);
-//     return directions[keys[Math.floor(Math.random() * keys.length)]];
-// }
+socket.on("PlayingPlayers", (players) => {
+    let playersList = JSON.parse(players);
+    const playerTable = document.getElementById("players");
 
-// function isInRange(x, y) {
-//     return x >= 0 && x < cols && y >= 0 && y < rows;
-// }
+    playersList.players.forEach(player => {
+        const row = document.createElement("tr");
+        const username = document.createElement("td");
+        const score = document.createElement("td");
+        const contribution = document.createElement("td");
 
-// function drawCell(x, y) {
-//     ctx.fillStyle = "#1E1E1E";
-//     ctx.fillRect(x * cellSize, y * cellSize, cellSize-3, cellSize-3);
-// }
+        username.innerHTML = player.playerUsername;
+        score.innerHTML = player.score;
+        contribution.innerHTML = player.contribution;
 
-// function drawLine(x1, y1, x2, y2) {
-//     ctx.beginPath();
-//     ctx.moveTo(x1, y1);
-//     ctx.lineTo(x2, y2);
-//     ctx.stroke();
-// }
+        let color;
+        switch(player.color){
+            case "pink":
+                color = "#DE13C9";
+                break;
+            case "blue":
+                color = "#20CAFF";
+                break;
+            case "green":
+                color = "#12F436";
+                break;
+            case "orange":
+                color = "#FB8F10";
+                break;
+        };
+        row.style.color = color;
+        row.appendChild(username);
+        row.appendChild(score);
+        row.appendChild(contribution);
+        playerTable.appendChild(row);
+    });
+});
 
-// function wilsonsAlgorithm() {
-//     // visit random cell
-//     let startX = Math.floor(Math.random() * cols);
-//     let startY = Math.floor(Math.random() * rows);
-//     grid[startY][startX].visited = true;
-//     drawCell(startX, startY);
-
-//     while (true) {
-//         // find unvisited cell
-//         let unvisitedCells = [];
-//         for (let y = 0; y < rows; y++) {
-//             for (let x = 0; x < cols; x++) {
-//                 if (!grid[y][x].visited) {
-//                     unvisitedCells.push(grid[y][x]);
-//                 }
-//             }
-//         }
-//         if (unvisitedCells.length === 0) break;
-
-    
-//         let randomCell = unvisitedCells[Math.floor(Math.random() * unvisitedCells.length)];
-//         let path = [randomCell];
-//         let currentCell = randomCell;
-//         let pathMap = {};
-
-//         //move randomly until hitting a visited cell
-//         while (!currentCell.visited) {
-//             let direction = getRandomDirection();
-//             let nextX = currentCell.x + direction.x;
-//             let nextY = currentCell.y + direction.y;
-
-//             if (isInRange(nextX, nextY)) {
-//                 currentCell = grid[nextY][nextX];
-//                 let key = `${currentCell.x},${currentCell.y}`;
-//                 if (pathMap[key]) {
-//                     path = path.slice(0, pathMap[key] + 1);
-//                 } else {
-//                     pathMap[key] = path.length;
-//                     path.push(currentCell);
-//                 }
-//             }
-//         }
-
-//         // draw the path
-//         for (let i = 0; i < path.length; i++) {
-//             let cell = path[i];
-//             cell.visited = true;
-//             drawCell(cell.x, cell.y);
-
-//             if (i > 0) {
-//                 let prevCell = path[i - 1];
-//                 let midX = (cell.x + prevCell.x) * cellSize / 2 + cellSize / 2;
-//                 let midY = (cell.y + prevCell.y) * cellSize / 2 + cellSize / 2;
-//                 drawCell(midX / cellSize, midY / cellSize);
-//             }
-//         }
-//     }
-// }
-
-
-// ctx.fillStyle = '#12F496';
-// ctx.fillRect(0, 0, width, height);
-
-// // Run Wilson's algorithm
-// wilsonsAlgorithm();
-
+socket.on("MoveBall", (data) => {
+    globalX = data.x;
+    globalY = data.y;
+});
 
 const canvas = container.querySelector("#canvas");
 const context = canvas.getContext('2d');
@@ -275,9 +209,11 @@ draw();
 const ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
-    radius: 10,
-    dx: 1,  // Horizontal speed
-    dy: 1   // Vertical speed
+    radius: 20,
+    dx: 0,  // Horizontal speed
+    dy: 0,   // Vertical speed
+    ax: 0,
+    ay: 0
 };
 
 // Draw ball
@@ -291,8 +227,8 @@ function drawBall() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + ball.dx
-    let nextBally = ball.y + ball.dy
+    let nextBallx = ball.x + (ball.dx / 1000);
+    let nextBally = ball.y + (ball.dy / 1000);
 
     // [right, left, down, top]
     let pixels = [context.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
@@ -314,8 +250,8 @@ function updateBall() {
     drawBall();
 
     // Update ball position
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+    ball.x += ball.dx / 1000;
+    ball.y += ball.dy / 1000;
 
     // Check for collision with walls
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
@@ -326,21 +262,12 @@ function updateBall() {
     }
 
     checkCollision();
+    adjustSpeed();
 }
-function adjustSpeed(axis, increase) {
-    if (axis === 'x') {
-        if (increase) {
-            ball.dx = (ball.dx > 0 ? 1 : -1) * (Math.abs(ball.dx) + 1);
-        } else {
-            ball.dx = (ball.dx > 0 ? 1 : -1) * Math.max(1, Math.abs(ball.dx) - 1);
-        }
-    } else if (axis === 'y') {
-        if (increase) {
-            ball.dy = (ball.dy > 0 ? 1 : -1) * (Math.abs(ball.dy) + 1);
-        } else {
-            ball.dy = (ball.dy > 0 ? 1 : -1) * Math.max(1, Math.abs(ball.dy) - 1);
-        }
-    }
+
+function adjustSpeed() {
+    ball.dx = (ball.dx > 0 ? 1 : -1) * (Math.abs(ball.dx) + globalX);
+    ball.dy = (ball.dy > 0 ? 1 : -1) * (Math.abs(ball.dy) + globalY);
 }
 
 function rgbToHex(pixelData) {
@@ -362,7 +289,7 @@ function animate() {
 // Start animation
 animate();
 
-document.getElementById('increaseSpeedX').addEventListener('click', () => adjustSpeed('x', true));
-document.getElementById('decreaseSpeedX').addEventListener('click', () => adjustSpeed('x', false));
-document.getElementById('increaseSpeedY').addEventListener('click', () => adjustSpeed('y', true));
-document.getElementById('decreaseSpeedY').addEventListener('click', () => adjustSpeed('y', false));
+// document.getElementById('increaseSpeedX').addEventListener('click', () => adjustSpeed('x', true));
+// document.getElementById('decreaseSpeedX').addEventListener('click', () => adjustSpeed('x', false));
+// document.getElementById('increaseSpeedY').addEventListener('click', () => adjustSpeed('y', true));
+// document.getElementById('decreaseSpeedY').addEventListener('click', () => adjustSpeed('y', false));
