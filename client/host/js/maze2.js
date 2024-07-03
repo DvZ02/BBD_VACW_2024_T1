@@ -1,5 +1,5 @@
 const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+//  const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
@@ -218,10 +218,19 @@ function drawMaze(){
     context.closePath();
     context.stroke();
     
-    for(let i = 0; i < holes.length; i++){
+    // setTimeout(() => { 
+    //     console.log("d")   
+    //     for(let i = 0; i < playersList.players.length; i++){
+    //         context.moveTo(0, 0);
+    //         drawCircles(holes[i].x, holes[i].y, 18, playerColors[holes[i].player]);
+    //     }
+    // }, 1000);
+    // socket.emit("RequestPlayers");
+    for(let i = 0; i < playersList.players.length; i++){
         context.moveTo(0, 0);
         drawCircles(holes[i].x, holes[i].y, 18, playerColors[holes[i].player]);
     }
+
 }
 
 function detectSink(){
@@ -231,7 +240,7 @@ function detectSink(){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
         {
-            socket.emit("ReachedHole", {player: playersList.players[holes[i].player]});  
+           socket.emit("ReachedHole", {player: playersList.players[holes[i].player]});  
         }
     }
     // return null;
@@ -239,7 +248,9 @@ function detectSink(){
 }
 
 generateMaze();
-drawMaze();
+
+// setTimeout(drawMaze, 1000);
+// drawMaze();
 
 const ball = {
     x: canvas.width / 2,
@@ -461,7 +472,7 @@ function animate() {
 }
 
 // Start animation
-animate();
+setTimeout(animate, 300);
 
 // document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
 // document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
