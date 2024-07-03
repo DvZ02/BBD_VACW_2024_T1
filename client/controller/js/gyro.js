@@ -85,7 +85,7 @@ function getPhoneData() {
 //getOrientation()
 function run() {
 
-    screen.orientation.lock('portrait');
+    // screen.orientation.lock('portrait');
 
     //get the direction display elements
     const xOutput = document.getElementById("xCoOrd");
@@ -188,7 +188,7 @@ function run() {
             y: yNorm
         }
 
-        socket.emit("GyroData", norm);
+        socket.emit("GyroData", {user: sessionStorage.getItem("username"), norm: norm});
 
         return norm;
 

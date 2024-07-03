@@ -109,7 +109,21 @@ io.on('connection',  (socket) => {
     }); 
 
     socket.on("GyroData", (data) =>{
-        socket.broadcast.emit("MoveBall", data);
+        // let gyroData = JSON.parse(data);
+        playersDB.forEach(player => {
+            if(player.playerUsername == data.user){
+                player.score += 1;
+
+                if(data.norm.x === 0 ){
+                    player.contribution = 90;
+                }else{
+                    player.contribution = Math.round(Math.atan2(data.norm.y,data.norm.x) * 180 / Math.PI);
+                }
+            }
+            console.log(data.norm)
+            console.log(player.playerUsername + " " + player.contribution);
+        });
+        socket.broadcast.emit("MoveBall", data.norm);
     });
     socket.on("ReachedHole", (data)=>{
         io.emit("GameOver", data);

@@ -6,8 +6,10 @@ let globalY = 0;
 let accelWeight = 2;
 let playersList = [];
 
-socket.emit("RequestPlayers");
 
+setInterval(() => {
+    socket.emit("RequestPlayers");
+}, 200);
 
 
 socket.on("GameOver", (winner) => {
@@ -19,6 +21,7 @@ socket.on("PlayingPlayers", (players) => {
     playersList = JSON.parse(players);
     console.log(playersList);
     const playerTable = document.getElementById("players");
+    playerTable.innerHTML = "<tr><th>Players</th><th>Score</th><th>Contribution</th></tr>";
 
     playersList.players.forEach(player => {
         const row = document.createElement("tr");
@@ -255,8 +258,101 @@ function drawBall() {
     drawCircles(ball.x, ball.y, ball.radius, '#0095DD');
 }
 
-function checkCollision() {
+function checkCircleColors() {
+    const points = 72;
+    const angleDegStep = 360/points;
+    const angleStep = (2 * Math.PI) / points;
 
+    let nextBallx = ball.x + (ball.dx/accelWeight);
+    let nextBally = ball.y + (ball.dy/accelWeight);
+
+    for (let i = 0; i < points; i++) {
+        const angle = i * angleStep;
+        const angleDeg = i * angleDegStep;
+        const x = nextBallx + (1.05 * ball.radius * Math.cos(angle));
+        const y = nextBally + (1.05 * ball.radius * Math.sin(angle));
+
+        const imageData = context.getImageData(x, y, 1, 1).data;
+        
+        if(imageData[0] === 18)
+        {
+            if(angleDeg >= 0 && angleDeg < 45)
+            {
+                if(ball.dx > 0)
+                {
+                    ball.dx *= -0.5;
+                }   
+            }
+            else if(angleDeg >= 45 && angleDeg < 135)
+            {
+                if(ball.dy > 0)
+                {
+                    ball.dy *= -0.5;
+                }
+            }
+            else if(angleDeg > 135 && angleDeg < 225)
+            {
+                if(ball.dx < 0)
+                {
+                    ball.dx *= -0.5;
+                }
+            }
+            else if(angleDeg > 225 && angleDeg < 315)
+            {
+                if(ball.dy < 0)
+                {
+                    ball.dy *= -0.5;
+                }
+            }
+            else if(angleDeg > 315 && angleDeg <= 360)
+            {
+                if(ball.dx > 0)
+                {
+                    ball.dx *= -0.5;
+                }
+            }
+            else if(angleDeg === 45)
+            {
+                if(ball.dx > 0 && ball.dy < 0)
+                {
+                    ball.dx *= -0.5;
+                    ball.dy *= -0.5;
+                }
+                    
+            }
+            else if(angleDeg === 135)
+            {
+                if(ball.dx < 0 && ball.dy < 0)
+                {
+                    ball.dx *= -0.5;
+                    ball.dy *= -0.5;
+                }
+                    
+            }
+            else if(angleDeg === 225)
+            {
+                if(ball.dx < 0 && ball.dy > 0)
+                {
+                    ball.dx *= -0.5;
+                    ball.dy *= -0.5;
+                }
+                    
+            }
+            else if(angleDeg === 315)
+            {
+                if(ball.dx > 0 && ball.dy > 0)
+                {
+                    ball.dx *= -0.5;
+                    ball.dy *= -0.5;
+                }
+                    
+            }
+        }
+    }
+}
+
+function checkCollision() {
+    
     let nextBallx = ball.x + (ball.dx/accelWeight);
     let nextBally = ball.y + (ball.dy/accelWeight);
 
@@ -297,25 +393,6 @@ function checkCollision() {
 
 }
 
-// function checkCollision() 
-// {
-
-//     let nextBallx = ball.x + (ball.dx);
-//     let nextBally = ball.y + (ball.dy);
-
-//     // [right, left, down, top]
-//     let pixels = [context.getImageData(nextBallx + ball.radius + 0.05, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 0.05, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 0.05, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 0.05, 1, 1).data];
-
-//     if(pixels[0][0] == 18 || pixels[1][0] == 18 )
-//     {
-//         ball.dx *= 0;
-//     }
-//     if(pixels[2][0] == 18 || pixels[3][0] == 18)
-//     {
-//         ball.dy *= 0;
-//     }
-// }
-
 function refreshScene(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawMaze();
@@ -324,7 +401,9 @@ function refreshScene(){
 
 // Update ball position
 function updateBall() {
-    checkCollision();
+    // checkCollision();
+    checkCircleColors();
+
     // Update ball position
     ball.x += ball.dx/accelWeight;
     ball.y += ball.dy/accelWeight;
