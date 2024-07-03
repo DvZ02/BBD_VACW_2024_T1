@@ -239,12 +239,12 @@ function detectSink(){
     let minDist = 15;
     for(let i = 0; i < playersList.players.length; i++){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
-        socket.emit("BallDistance", {player: i, distance: dist});
         if( dist <= minDist)
         {
             console.log(playersList.players[holes[i].player - 1]);
             socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});  
         }
+        socket.emit("BallDistance", {player: i, distance: dist});
     }
     // return null;
     
