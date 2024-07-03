@@ -8,13 +8,17 @@ let playersList = [];
 
 
 setInterval(() => {
-socket.emit("RequestPlayers");
+    socket.emit("RequestPlayers");
 }, 200);
 
+socket.on("Fun", () => {
+    document.getElementById("fun").style.display = "block";
+});
 
 socket.on("GameOver", (winner) => {
     console.log(winner);
     sessionStorage.setItem("winner", winner.player);
+    sessionStorage.setItem("color", winner.color);
     window.location.href = "winScreen.html";
 });
 
@@ -241,8 +245,8 @@ function detectSink(){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
         {
-            console.log(playersList.players[holes[i].player - 1]);
-            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});
+            // console.log(playersList.players[holes[i].player - 1]);
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername, color: playerColors[holes[i].player]});
             break; 
         }
         socket.emit("BallDistance", {player: i, distance: dist});
@@ -440,26 +444,27 @@ function adjustAccel(val, axis)
 }
 
 function adjustSpeed() {
-    if(ball.dx + globalX > 1.5)
+    let speed = 2;
+    if(ball.dx + globalX > speed)
     {
-        ball.dx = 1;
+        ball.dx = speed;
     }
-    else if(ball.dx + globalX < -1.5)
+    else if(ball.dx + globalX < -speed)
     {
-        ball.dx = -1.5;
+        ball.dx = -speed;
     }
     else
     {
         ball.dx = ball.dx + globalX;
 }
 
-    if(ball.dy + globalY > 1.5)
+    if(ball.dy + globalY > speed)
     {
-        ball.dy = 1.5;
+        ball.dy = speed;
 }
-    else if(ball.dy + globalY < -1.5)
+    else if(ball.dy + globalY < -speed)
     {
-        ball.dy = -1.5;
+        ball.dy = -speed;
     }
     else
     {

@@ -14,6 +14,8 @@ function signup(){
             sessionStorage.setItem("username", username);
             document.getElementById("join").style.display = "none";
             document.getElementsByClassName("waiting")[0].style.display = "block";
+        }else{
+            alert("Username already taken or game is full");
         }
     });
 }

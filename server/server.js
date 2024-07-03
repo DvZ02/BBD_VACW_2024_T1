@@ -13,6 +13,8 @@ app.use(express.static('../client'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
+    funThreshold = Math.floor(Math.random() * 10000);
+    console.log(funThreshold);   
 });
 
 const io = socketio(server);
@@ -21,6 +23,9 @@ let playersSession=[]; // For now this is a 2D array which contains the username
 let playersDB = []
 
 let colors = ["green", "blue", "orange", "pink"]
+
+let funThreshold = 0;
+let funCounter = 0;
 
 io.on('connection',  (socket) => {
     console.log('New client connected');
@@ -115,6 +120,12 @@ io.on('connection',  (socket) => {
 
     socket.on("GyroData", (data) =>{
         // let gyroData = JSON.parse(data);
+        funCounter++;
+        if(funCounter >= funThreshold){
+            io.emit("Fun");
+            funCounter = 0;
+        }
+
         playersDB.forEach(player => {
             if(player.playerUsername == data.user){
                 if(data.norm.x === 0 ){
@@ -129,12 +140,13 @@ io.on('connection',  (socket) => {
         socket.broadcast.emit("MoveBall", data.norm);
     });
     socket.on("ReachedHole", (data)=>{
+        // console.log(data);
         io.emit("GameOver", data);
         playersDB = [];
     })
 
     socket.on("BallDistance", (data) =>{
-        // console.log(playersDB[data.player]);
-        playersDB[data.player].score = Math.round(data.distance, 2);
+        if(playersDB[data.player] != undefined)
+            playersDB[data.player].score = Math.round(data.distance, 2);
     });
 });
