@@ -443,26 +443,27 @@ function adjustAccel(val, axis)
 }
 
 function adjustSpeed() {
-    if(ball.dx + globalX > 1.5)
+    let speed = 2;
+    if(ball.dx + globalX > speed)
     {
-        ball.dx = 1;
+        ball.dx = speed;
     }
-    else if(ball.dx + globalX < -1.5)
+    else if(ball.dx + globalX < -speed)
     {
-        ball.dx = -1.5;
+        ball.dx = -speed;
     }
     else
     {
         ball.dx = ball.dx + globalX;
 }
 
-    if(ball.dy + globalY > 1.5)
+    if(ball.dy + globalY > speed)
     {
-        ball.dy = 1.5;
+        ball.dy = speed;
 }
-    else if(ball.dy + globalY < -1.5)
+    else if(ball.dy + globalY < -speed)
     {
-        ball.dy = -1.5;
+        ball.dy = -speed;
     }
     else
     {
