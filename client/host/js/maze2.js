@@ -1,5 +1,5 @@
-const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+//const socket = new io('https://tilt-3596.onrender.com');
+//const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
@@ -8,10 +8,10 @@ let playersList = [];
 
 
 setInterval(() => {
-    socket.emit("RequestPlayers");
+socket.emit("RequestPlayers");
 }, 200);
 
-
+/*
 socket.on("GameOver", (winner) => {
     console.log(winner);
     alert("Game over");
@@ -61,7 +61,7 @@ socket.on("MoveBall", (data) => {
     globalY = data.y;
     console.log(data);
 });
-
+*/
 const canvas = container.querySelector("#canvas");
 const context = canvas.getContext('2d', { willReadFrequently: true });
 let size = 600;
@@ -352,7 +352,7 @@ function checkCircleColors() {
 }
 
 function checkCollision() {
-    
+
     let nextBallx = ball.x + (ball.dx/accelWeight);
     let nextBally = ball.y + (ball.dy/accelWeight);
 
@@ -412,17 +412,17 @@ function updateBall() {
     adjustSpeed();
 }
 
-// function adjustAccel(val, axis)
-// {
-//     if(axis === "x")
-//     {
-//         globalX = val;
-//     }
-//     else if(axis === "y")
-//     {
-//         globalY = val;
-//     }
-// }
+function adjustAccel(val, axis)
+{
+    if(axis === "x")
+    {
+        globalX = val;
+    }
+    else if(axis === "y")
+    {
+        globalY = val;
+    }
+}
 
 function adjustSpeed() {
     if(ball.dx + globalX > 1.5)
@@ -436,12 +436,12 @@ function adjustSpeed() {
     else
     {
         ball.dx = ball.dx + globalX;
-    }
+}
 
     if(ball.dy + globalY > 1.5)
     {
         ball.dy = 1.5;
-    }
+}
     else if(ball.dy + globalY < -1.5)
     {
         ball.dy = -1.5;
@@ -452,18 +452,27 @@ function adjustSpeed() {
     }
 }
 
+function handleOrientation() {
+    canvas.style.transform = `rotateY(${-globalX * 180}deg) rotateX(${-globalY * 180}deg)`
+}
+
 // Animation loop
 function animate() {
     requestAnimationFrame(animate);
+    //handleOrientation()
     refreshScene();
     updateBall();
     detectSink();
 }
 
+setInterval(() => {
+    handleOrientation();
+}, 200)
+
 // Start animation
 animate();
 
-// document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
-// document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
-// document.getElementById('up').addEventListener('click', () => adjustAccel(-0.1, "y"));
-// document.getElementById('down').addEventListener('click', () => adjustAccel(0.1, "y"));
+document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
+document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
+document.getElementById('up').addEventListener('click', () => adjustAccel(-0.1, "y"));
+document.getElementById('down').addEventListener('click', () => adjustAccel(0.1, "y"));
