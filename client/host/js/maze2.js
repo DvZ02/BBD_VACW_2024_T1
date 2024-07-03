@@ -1,5 +1,5 @@
 const socket = new io('https://tilt-3596.onrender.com');
-//const socket = new io('http://localhost:8000');
+// const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
@@ -22,7 +22,7 @@ socket.on("PlayingPlayers", (players) => {
     playersList = JSON.parse(players);
     console.log(playersList);
     const playerTable = document.getElementById("players");
-    playerTable.innerHTML = "<tr><th>Players</th><th>Score</th><th>Contribution</th></tr>";
+    playerTable.innerHTML = "<tr><th>Players</th><th>Distance</th><th>Contribution</th></tr>";
 
     playersList.players.forEach(player => {
         const row = document.createElement("tr");
@@ -31,8 +31,8 @@ socket.on("PlayingPlayers", (players) => {
         const contribution = document.createElement("td");
 
         username.innerHTML = player.playerUsername;
-        score.innerHTML = player.score;
-        contribution.innerHTML = player.contribution;
+        score.innerHTML = player.score + "px";
+        contribution.innerHTML = player.contribution + "°";
 
         let color;
         switch(player.color){
@@ -148,7 +148,7 @@ for (let i = 0; i < cols; i++) {
 }
 
 function generateMaze() {
-    context.lineCap = 'square';
+    context.lineCap = 'round';
     context.lineWidth = cellSize/4;
     while (true) {
         while (true) {
@@ -237,7 +237,7 @@ function drawMaze(){
 function detectSink(){
     //h^2 = a^2 + b^2
     let minDist = 15;
-    for(let i = 0; i < 4; i++){
+    for(let i = 0; i < playersList.players.length; i++){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         socket.emit("BallDistance", {player: i, distance: dist});
         if( dist <= minDist)
@@ -273,7 +273,7 @@ function drawBall() {
 }
 
 function checkCircleColors() {
-    const points = 72;
+    const points = 20;
     const angleDegStep = 360/points;
     const angleStep = (2 * Math.PI) / points;
 

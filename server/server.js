@@ -123,8 +123,8 @@ io.on('connection',  (socket) => {
                     player.contribution = Math.round(Math.atan2(data.norm.y,data.norm.x) * 180 / Math.PI);
                 }
             }
-            console.log(data.norm)
-            console.log(player.playerUsername + " " + player.contribution);
+            // console.log(data.norm)
+            // console.log(player.playerUsername + " " + player.contribution);
         });
         socket.broadcast.emit("MoveBall", data.norm);
     });
@@ -134,6 +134,7 @@ io.on('connection',  (socket) => {
     })
 
     socket.on("BallDistance", (data) =>{
-        playersDB[data.player].score = data.distance;
+        // console.log(playersDB[data.player]);
+        playersDB[data.player].score = Math.round(data.distance, 2);
     });
 });
