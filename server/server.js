@@ -111,4 +111,7 @@ io.on('connection',  (socket) => {
     socket.on("GyroData", (data) =>{
         socket.broadcast.emit("MoveBall", data);
     });
+    socket.on("ReachedHole", (data)=>{
+        socket.broadcast("GameOver", data);
+    })
 });
