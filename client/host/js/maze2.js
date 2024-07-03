@@ -1,5 +1,5 @@
 const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+//const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
@@ -8,7 +8,7 @@ let playersList = [];
 
 
 setInterval(() => {
-    socket.emit("RequestPlayers");
+socket.emit("RequestPlayers");
 }, 200);
 
 
@@ -219,10 +219,19 @@ function drawMaze(){
     context.closePath();
     context.stroke();
     
-    for(let i = 0; i < holes.length; i++){
+    // setTimeout(() => { 
+    //     console.log("d")   
+    //     for(let i = 0; i < playersList.players.length; i++){
+    //         context.moveTo(0, 0);
+    //         drawCircles(holes[i].x, holes[i].y, 18, playerColors[holes[i].player]);
+    //     }
+    // }, 1000);
+    // socket.emit("RequestPlayers");
+    for(let i = 0; i < playersList.players.length; i++){
         context.moveTo(0, 0);
         drawCircles(holes[i].x, holes[i].y, 18, playerColors[holes[i].player]);
     }
+
 }
 
 function detectSink(){
@@ -241,7 +250,9 @@ function detectSink(){
 }
 
 generateMaze();
-drawMaze();
+
+// setTimeout(drawMaze, 1000);
+// drawMaze();
 
 const ball = {
     x: canvas.width / 2,
@@ -354,7 +365,7 @@ function checkCircleColors() {
 }
 
 function checkCollision() {
-    
+
     let nextBallx = ball.x + (ball.dx/accelWeight);
     let nextBally = ball.y + (ball.dy/accelWeight);
 
@@ -414,17 +425,17 @@ function updateBall() {
     adjustSpeed();
 }
 
-// function adjustAccel(val, axis)
-// {
-//     if(axis === "x")
-//     {
-//         globalX = val;
-//     }
-//     else if(axis === "y")
-//     {
-//         globalY = val;
-//     }
-// }
+function adjustAccel(val, axis)
+{
+    if(axis === "x")
+    {
+        globalX = val;
+    }
+    else if(axis === "y")
+    {
+        globalY = val;
+    }
+}
 
 function adjustSpeed() {
     if(ball.dx + globalX > 1.5)
@@ -438,12 +449,12 @@ function adjustSpeed() {
     else
     {
         ball.dx = ball.dx + globalX;
-    }
+}
 
     if(ball.dy + globalY > 1.5)
     {
         ball.dy = 1.5;
-    }
+}
     else if(ball.dy + globalY < -1.5)
     {
         ball.dy = -1.5;
@@ -454,16 +465,25 @@ function adjustSpeed() {
     }
 }
 
+function handleOrientation() {
+    canvas.style.transform = `rotateY(${-globalX * 90}deg) rotateX(${-globalY * 90}deg)`
+}
+
 // Animation loop
 function animate() {
     requestAnimationFrame(animate);
+    //handleOrientation()
     refreshScene();
     updateBall();
     detectSink();
 }
 
+setInterval(() => {
+    handleOrientation();
+}, 200)
+
 // Start animation
-animate();
+setTimeout(animate, 300);
 
 // document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
 // document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));

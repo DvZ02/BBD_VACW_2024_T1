@@ -13,6 +13,7 @@ body{
     color: white;
     font-family: "Press Start 2P", system-ui;
     font-size: 16px;
+    perspective: 1000px;
 }
 
 
@@ -51,6 +52,8 @@ body{
     height: 100%;
     border: 5px solid #12F496;
     background-color: black;
+    transition: 200ms;
+    transform: preserve-3d;
 }
 
 td{
