@@ -224,8 +224,8 @@ function drawBall() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + (ball.dx);
-    let nextBally = ball.y + (ball.dy);
+    let nextBallx = ball.x + (ball.dx/100);
+    let nextBally = ball.y + (ball.dy/100);
 
     // [right, left, down, top]
     let pixels = [context.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
@@ -293,8 +293,8 @@ function refreshScene(){
 function updateBall() {
     checkCollision();
     // Update ball position
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+    ball.x += ball.dx/100;
+    ball.y += ball.dy/100;
 
     // Check for collision with walls
     adjustSpeed();
@@ -313,32 +313,31 @@ function updateBall() {
 // }
 
 function adjustSpeed() {
-    if(ball.dx + globalX > 2)
+    if(ball.dx + globalX > 1.5)
     {
-        ball.dx = 2;
+        ball.dx = 1;
     }
-    else if(ball.dx + globalX < -2)
+    else if(ball.dx + globalX < -1.5)
     {
-        ball.dx = -2;
+        ball.dx = -1.5;
     }
     else
     {
         ball.dx = ball.dx + globalX;
     }
 
-    if(ball.dy + globalY > 2)
+    if(ball.dy + globalY > 1.5)
     {
-        ball.dy = 2;
+        ball.dy = 1.5;
     }
-    else if(ball.dy + globalY < -2)
+    else if(ball.dy + globalY < -1.5)
     {
-        ball.dy = -2;
+        ball.dy = -1.5;
     }
     else
     {
         ball.dy = ball.dy + globalY;
     }
-    console.log(ball.dx);
 }
 
 // Animation loop
