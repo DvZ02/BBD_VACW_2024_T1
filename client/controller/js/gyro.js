@@ -79,6 +79,8 @@ function getPhoneData() {
 //getOrientation()
 function run() {
 
+    screen.orientation.lock('portrait');
+
     //get the direction display elements
     const xOutput = document.getElementById("xCoOrd");
     const yOutput = document.getElementById("yCoOrd");
