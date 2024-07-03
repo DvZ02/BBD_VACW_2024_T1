@@ -242,7 +242,8 @@ function detectSink(){
         if( dist <= minDist)
         {
             console.log(playersList.players[holes[i].player - 1]);
-            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});  
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});
+            break; 
         }
         socket.emit("BallDistance", {player: i, distance: dist});
     }
