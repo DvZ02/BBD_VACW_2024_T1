@@ -145,7 +145,7 @@ function run() {
         let gyroY = event.beta;
 
         const yNorm = gyroY / 180;
-        const xNorm = ggyroamma / 90;
+        const xNorm = gyroX / 90;
         
         /*
         let xNorm = 0.0;
