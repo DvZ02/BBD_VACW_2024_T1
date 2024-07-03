@@ -141,9 +141,13 @@ function run() {
     //handle the normal people
     window.addEventListener('deviceorientation', (event) => {
 
-        let gyroX = event.beta;
-        let gyroY = event.alpha;
+        let gyroX = event.gamma;
+        let gyroY = event.beta;
 
+        const yNorm = gyroY / 180;
+        const xNorm = ggyroamma / 90;
+        
+        /*
         let xNorm = 0.0;
         let yNorm = 0.0;
 
@@ -167,7 +171,7 @@ function run() {
         xOutput.innerText = xNorm;
         yOutput.innerText = yNorm;
         magOutput.innerText = magnitude;
-
+        */
         //updateScreen(xNorm, yNorm);
         handleRotate(xNorm, yNorm);
 
@@ -180,7 +184,7 @@ function run() {
 
         return norm;
 
-    })
+    }, true)
 }
 
 var sphere = document.querySelector('.sphere'),
@@ -197,8 +201,8 @@ var xdeg,xdegstring,ydeg,ydegstring;
 
 function handleRotate(xRotate, yRotate){
     
-    xdeg = -180 * xRotate;
-    ydeg = 180 * yRotate;
+    xdeg = -180 * (xRotate + 1) / 2;
+    ydeg = 180 * (yRotate + 1) / 2;
     xdegstring = xdeg + 'deg';
     ydegstring = ydeg + 'deg';
     
