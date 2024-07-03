@@ -117,8 +117,6 @@ io.on('connection',  (socket) => {
         // let gyroData = JSON.parse(data);
         playersDB.forEach(player => {
             if(player.playerUsername == data.user){
-                player.score += 1;
-
                 if(data.norm.x === 0 ){
                     player.contribution = 90;
                 }else{
@@ -134,4 +132,8 @@ io.on('connection',  (socket) => {
         io.emit("GameOver", data);
         playersDB = [];
     })
+
+    socket.on("BallDistance", (data) =>{
+        playersDB[data.player].score = data.distance;
+    });
 });
