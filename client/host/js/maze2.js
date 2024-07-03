@@ -3,11 +3,11 @@ const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
-const playersList = [];
+let playersList = [];
 
 socket.emit("RequestPlayers");
 
-socket.emit("ReachedHole", {player: playersList[0]});
+
 
 socket.on("GameOver", (winner) => {
     console.log(winner);
@@ -16,6 +16,7 @@ socket.on("GameOver", (winner) => {
 
 socket.on("PlayingPlayers", (players) => {
     playersList = JSON.parse(players);
+    console.log(playersList);
     const playerTable = document.getElementById("players");
 
     playersList.players.forEach(player => {
@@ -226,10 +227,11 @@ function detectSink(){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
         {
-            return playerColors[holes[i].player];
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player]});  
         }
     }
-    return null;
+    // return null;
+    
 }
 
 generateMaze();
@@ -319,6 +321,7 @@ function animate() {
     requestAnimationFrame(animate);
     refreshScene();
     updateBall();
+    detectSink();
 }
 
 // Start animation
