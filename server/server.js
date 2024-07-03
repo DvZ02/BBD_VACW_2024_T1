@@ -145,7 +145,7 @@ io.on('connection',  (socket) => {
     })
 
     socket.on("BallDistance", (data) =>{
-        console.log(playersDB[data.player]);
-        playersDB[data.player].score = Math.round(data.distance, 2);
+        if(playersDB[data.player] != undefined)
+            playersDB[data.player].score = Math.round(data.distance, 2);
     });
 });
