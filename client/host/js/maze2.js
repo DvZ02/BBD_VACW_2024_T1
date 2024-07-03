@@ -256,8 +256,8 @@ function drawBall() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + (ball.dx/100);
-    let nextBally = ball.y + (ball.dy/100);
+    let nextBallx = ball.x + (ball.dx/5);
+    let nextBally = ball.y + (ball.dy/5);
 
     // [right, left, down, top]
     let pixels = [context.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
@@ -325,8 +325,8 @@ function refreshScene(){
 function updateBall() {
     checkCollision();
     // Update ball position
-    ball.x += ball.dx/100;
-    ball.y += ball.dy/100;
+    ball.x += ball.dx/5;
+    ball.y += ball.dy/5;
 
     // Check for collision with walls
     adjustSpeed();
