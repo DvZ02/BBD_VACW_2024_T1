@@ -112,6 +112,6 @@ io.on('connection',  (socket) => {
         socket.broadcast.emit("MoveBall", data);
     });
     socket.on("ReachedHole", (data)=>{
-        socket.broadcast("GameOver", data);
+        io.emit("GameOver", data);
     })
 });
