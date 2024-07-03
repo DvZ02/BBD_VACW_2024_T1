@@ -1,0 +1,24 @@
+body{
+    background-color: #1E1E1E;
+    text-align: center;
+    color: white;
+    font-family: "Press Start 2P", system-ui;
+    font-size: 16px;
+}
+
+
+#join{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 15svh;
+    width: 80vw;   
+    background-color: #12F496;
+    text-decoration: none;
+    border-radius: 2%;
+    font-size: 4svh;
+    font-family: "Press Start 2P", system-ui;
+    color: white;
+}
