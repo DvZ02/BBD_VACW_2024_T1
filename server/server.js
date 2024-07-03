@@ -19,6 +19,8 @@ const io = socketio(server);
 let ballX=0, ballY=0, ballZ=0;
 let playersSession=[]; // For now this is a 2D array which contains the usernames for the current game session
 let playersDB = []
+let playerGyroContribution = [];
+let currentContributors = [];
 
 let colors = ["green", "blue", "orange", "pink"]
 
@@ -111,7 +113,8 @@ io.on('connection',  (socket) => {
     socket.on("GyroData", (data) =>{
         // let gyroData = JSON.parse(data);
         playersDB.forEach(player => {
-            if(player.playerUsername == data.user){
+            if(player.playerUsername == data.user && !currentContributors.includes(data.user)){
+                currentContributors.push(data.user);
                 player.score += 1;
 
                 if(data.norm.x === 0 ){
@@ -119,11 +122,18 @@ io.on('connection',  (socket) => {
                 }else{
                     player.contribution = Math.round(Math.atan2(data.norm.y,data.norm.x) * 180 / Math.PI);
                 }
+                playerGyroContribution.push(data.norm);
             }
             console.log(data.norm)
             console.log(player.playerUsername + " " + player.contribution);
         });
-        socket.broadcast.emit("MoveBall", data.norm);
+        if(playerGyroContribution.length===4){
+            data.norm.x = (playerGyroContribution[0].x+playerGyroContribution[1].x+playerGyroContribution[2].x+playerGyroContribution[3].x)/4;
+            data.norm.y = (playerGyroContribution[0].y+playerGyroContribution[1].y+playerGyroContribution[2].y+playerGyroContribution[3].y)/4;
+            socket.broadcast.emit("MoveBall", data.norm);
+            playerGyroContribution = [];
+            currentContributors = [];
+        }
     });
     socket.on("ReachedHole", (data)=>{
         io.emit("GameOver", data);
