@@ -5,9 +5,12 @@ socket.emit("RequestPlayers");
 
 socket.on("GameOver", (winner) => {
   console.log(winner);
-  // alert("Game over");
-  // window.location.href = "gameOver.html";
+  window.location.href = "winScreen.html";
 });
+
+function joinAgain(){
+    window.location.href = "controller.html";
+}
 
 socket.on("PlayingPlayers", (players) =>{
   let playerList = JSON.parse(players);
