@@ -3,6 +3,7 @@ const socket = new io('https://tilt-3596.onrender.com');
 
 let globalX = 0;
 let globalY = 0;
+let accelWeight = 2;
 let playersList = [];
 
 socket.emit("RequestPlayers");
@@ -222,7 +223,7 @@ function drawMaze(){
 
 function detectSink(){
     //h^2 = a^2 + b^2
-    let minDist = 5;
+    let minDist = 9;
     for(let i = 0; i < 4; i++){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
@@ -256,8 +257,8 @@ function drawBall() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + (ball.dx/5);
-    let nextBally = ball.y + (ball.dy/5);
+    let nextBallx = ball.x + (ball.dx/accelWeight);
+    let nextBally = ball.y + (ball.dy/accelWeight);
 
     // [right, left, down, top]
     let pixels = [context.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
@@ -325,8 +326,8 @@ function refreshScene(){
 function updateBall() {
     checkCollision();
     // Update ball position
-    ball.x += ball.dx/5;
-    ball.y += ball.dy/5;
+    ball.x += ball.dx/accelWeight;
+    ball.y += ball.dy/accelWeight;
 
     // Check for collision with walls
     adjustSpeed();
