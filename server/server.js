@@ -140,7 +140,7 @@ io.on('connection',  (socket) => {
         socket.broadcast.emit("MoveBall", data.norm);
     });
     socket.on("ReachedHole", (data)=>{
-        console.log(data);
+        // console.log(data);
         io.emit("GameOver", data);
         playersDB = [];
     })
