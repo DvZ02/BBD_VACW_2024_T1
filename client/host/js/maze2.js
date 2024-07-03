@@ -466,7 +466,7 @@ function adjustSpeed() {
 }
 
 function handleOrientation() {
-    canvas.style.transform = `rotateY(${-globalX * 30}deg) rotateX(${-globalY * 30}deg)`
+    canvas.style.transform = `rotateY(${-globalX * 45}deg) rotateX(${-globalY * 45}deg)`
 }
 
 // Animation loop
