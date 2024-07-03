@@ -1,10 +1,10 @@
 //const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
 
-/*socket.emit("RequestPlayers");
+socket.emit("RequestPlayers");
 
 socket.on("PlayingPlayers", (players) => {
     let playersList = JSON.parse(players);
@@ -47,7 +47,7 @@ socket.on("MoveBall", (data) => {
     globalX = data.x;
     globalY = data.y;
     console.log(data);
-});*/
+});
 
 const canvas = container.querySelector("#canvas");
 const context = canvas.getContext('2d');
