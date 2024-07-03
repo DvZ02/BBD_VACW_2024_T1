@@ -1,13 +1,22 @@
-const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+// const socket = new io('https://tilt-3596.onrender.com');
+const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
+let playersList = [];
 
 socket.emit("RequestPlayers");
 
+
+
+socket.on("GameOver", (winner) => {
+    console.log(winner);
+    alert("Game over");
+});
+
 socket.on("PlayingPlayers", (players) => {
-    let playersList = JSON.parse(players);
+    playersList = JSON.parse(players);
+    console.log(playersList);
     const playerTable = document.getElementById("players");
 
     playersList.players.forEach(player => {
@@ -175,22 +184,28 @@ function generateMaze() {
     
 }
 
-const holes = [{x:0, y:0, player:0},{x:0, y:0, player:0},{x:0, y:0, player:0},{x:0, y:0, player:0}]
+function drawCircles(x, y, radius, color) {
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fillStyle = color;
+    context.fill();
+    context.closePath();
+}
+
+let playerColors = {
+    1: "#12F436",
+    2: "#20CAFF",
+    3: "#FB8F10",
+    4: "#DE13C9"
+};
+let scaleFactor = cellSize/2;
+const holes = [{x:0 + scaleFactor, y:0 + scaleFactor, player:1},{x:cols*cellSize - scaleFactor, y:rows *cellSize - scaleFactor, player:2},{x:0 + scaleFactor, y:rows*cellSize - scaleFactor, player:3},{x:cols*cellSize - scaleFactor, y:0 + scaleFactor, player:4}]
 
 function drawMaze(){
-    for (let i = 0; i < cols; i++){
-        for (let j = 0; j < rows; j++){
-            Maze.cells[i][j].show();
-        }
-    }  
-    for (let i = 0; i < Maze.walls.length; i++){
-        if (Maze.cells[Maze.walls[i].i1][Maze.walls[i].j1].inMaze || Maze.cells[Maze.walls[i].i2][Maze.walls[i].j2].inMaze){
-            Maze.walls[i].show();
-        }
-    }  
     for (let i = 0; i < Maze.closed.length; i++){
         Maze.closed[i].show();
     }
+
     context.beginPath();
     context.moveTo(0, 0);
     context.lineTo(cols*cellSize, 0);
@@ -198,6 +213,25 @@ function drawMaze(){
     context.lineTo(0, rows*cellSize);
     context.closePath();
     context.stroke();
+    
+    for(let i = 0; i < holes.length; i++){
+        context.moveTo(0, 0);
+        drawCircles(holes[i].x, holes[i].y, 18, playerColors[holes[i].player]);
+    }
+}
+
+function detectSink(){
+    //h^2 = a^2 + b^2
+    let minDist = 5;
+    for(let i = 0; i < 4; i++){
+        let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
+        if( dist <= minDist)
+        {
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player]});  
+        }
+    }
+    // return null;
+    
 }
 
 generateMaze();
@@ -213,13 +247,11 @@ const ball = {
     ay: 0
 };
 
+
+
 // Draw ball
 function drawBall() {
-    context.beginPath();
-    context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    context.fillStyle = '#0095DD';
-    context.fill();
-    context.closePath();
+    drawCircles(ball.x, ball.y, ball.radius, '#0095DD');
 }
 
 function checkCollision() {
@@ -345,6 +377,7 @@ function animate() {
     requestAnimationFrame(animate);
     refreshScene();
     updateBall();
+    detectSink();
 }
 
 // Start animation
