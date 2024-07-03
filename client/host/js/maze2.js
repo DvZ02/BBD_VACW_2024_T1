@@ -236,7 +236,7 @@ function drawMaze(){
 
 function detectSink(){
     //h^2 = a^2 + b^2
-    let minDist = 9;
+    let minDist = 15;
     for(let i = 0; i < 4; i++){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
@@ -466,7 +466,7 @@ function adjustSpeed() {
 }
 
 function handleOrientation() {
-    canvas.style.transform = `rotateY(${-globalX * 90}deg) rotateX(${-globalY * 90}deg)`
+    canvas.style.transform = `rotateY(${-globalX * 30}deg) rotateX(${-globalY * 30}deg)`
 }
 
 // Animation loop
