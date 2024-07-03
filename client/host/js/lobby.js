@@ -17,7 +17,7 @@ socket.on("PlayerJoinded", (data) =>{
             color = "#20CAFF";
             break;
         case "green":
-            color = "#12F436";
+            color = "#11F436";
             break;
         case "orange":
             color = "#FB8F10";

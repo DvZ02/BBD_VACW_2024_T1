@@ -39,7 +39,7 @@ socket.on("PlayingPlayers", (players) => {
                 color = "#20CAFF";
                 break;
             case "green":
-                color = "#12F436";
+                color = "#11F436";
                 break;
             case "orange":
                 color = "#FB8F10";
@@ -194,7 +194,7 @@ function drawCircles(x, y, radius, color) {
 }
 
 let playerColors = {
-    1: "#12F436",
+    1: "#11F436",
     2: "#20CAFF",
     3: "#FB8F10",
     4: "#DE13C9"
