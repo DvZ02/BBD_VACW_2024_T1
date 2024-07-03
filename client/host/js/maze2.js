@@ -3,11 +3,19 @@ const socket = new io('https://tilt-3596.onrender.com');
 
 let globalX = 0;
 let globalY = 0;
+const playersList = [];
 
 socket.emit("RequestPlayers");
 
+socket.emit("ReachedHole", {player: playersList[0]});
+
+socket.on("GameOver", (winner) => {
+    console.log(winner);
+    alert("Game over");
+});
+
 socket.on("PlayingPlayers", (players) => {
-    let playersList = JSON.parse(players);
+    playersList = JSON.parse(players);
     const playerTable = document.getElementById("players");
 
     playersList.players.forEach(player => {

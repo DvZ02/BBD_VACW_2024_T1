@@ -3,6 +3,11 @@ const socket = new io('https://tilt-3596.onrender.com');
 
 socket.emit("RequestPlayers");
 
+socket.on("GameOver", (winner) => {
+  console.log(winner);
+  alert("Game over");
+});
+
 socket.on("PlayingPlayers", (players) =>{
   let playerList = JSON.parse(players);
   playerList.players.forEach(player => {
@@ -145,7 +150,7 @@ function run() {
         let gyroY = event.beta;
 
         const yNorm = gyroY / 180;
-        const xNorm = ggyroamma / 90;
+        const xNorm = gyroX / 90;
         
         /*
         let xNorm = 0.0;
