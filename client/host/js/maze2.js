@@ -1,13 +1,15 @@
-const socket = new io('https://tilt-3596.onrender.com');
-// const socket = new io('http://localhost:8000');
+// const socket = new io('https://tilt-3596.onrender.com');
+const socket = new io('http://localhost:8000');
 
 let globalX = 0;
 let globalY = 0;
 let accelWeight = 2;
 let playersList = [];
 
-socket.emit("RequestPlayers");
 
+setInterval(() => {
+    socket.emit("RequestPlayers");
+}, 200);
 
 
 socket.on("GameOver", (winner) => {
@@ -19,6 +21,7 @@ socket.on("PlayingPlayers", (players) => {
     playersList = JSON.parse(players);
     console.log(playersList);
     const playerTable = document.getElementById("players");
+    playerTable.innerHTML = "<tr><th>Players</th><th>Score</th><th>Contribution</th></tr>";
 
     playersList.players.forEach(player => {
         const row = document.createElement("tr");
