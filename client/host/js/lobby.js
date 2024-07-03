@@ -1,5 +1,5 @@
-// const socket = new io('https://tilt-3596.onrender.com');
-const socket = new io('http://localhost:8000');
+const socket = new io('https://tilt-3596.onrender.com');
+// const socket = new io('http://localhost:8000');
 
 
 socket.on("PlayerJoinded", (data) =>{
