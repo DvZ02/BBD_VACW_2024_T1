@@ -1,4 +1,4 @@
-//const socket = new io('https://tilt-3596.onrender.com');
+const socket = new io('https://tilt-3596.onrender.com');
 //const socket = new io('http://localhost:8000');
 
 let globalX = 0;
@@ -11,7 +11,7 @@ setInterval(() => {
 socket.emit("RequestPlayers");
 }, 200);
 
-/*
+
 socket.on("GameOver", (winner) => {
     console.log(winner);
     alert("Game over");
@@ -61,7 +61,7 @@ socket.on("MoveBall", (data) => {
     globalY = data.y;
     console.log(data);
 });
-*/
+
 const canvas = container.querySelector("#canvas");
 const context = canvas.getContext('2d', { willReadFrequently: true });
 let size = 600;
@@ -472,7 +472,7 @@ setInterval(() => {
 // Start animation
 animate();
 
-document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
-document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
-document.getElementById('up').addEventListener('click', () => adjustAccel(-0.1, "y"));
-document.getElementById('down').addEventListener('click', () => adjustAccel(0.1, "y"));
+// document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
+// document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
+// document.getElementById('up').addEventListener('click', () => adjustAccel(-0.1, "y"));
+// document.getElementById('down').addEventListener('click', () => adjustAccel(0.1, "y"));
