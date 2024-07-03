@@ -6,6 +6,7 @@ socket.emit("RequestPlayers");
 socket.on("GameOver", (winner) => {
     // console.log(winner);
     sessionStorage.setItem("winner", winner.player);
+    sessionStorage.setItem("color", winner.color);
     window.location.href = "winScreen.html";
     // let winningPlayer = JSON.parse(winner); 
 });

@@ -18,6 +18,7 @@ socket.on("Fun", () => {
 socket.on("GameOver", (winner) => {
     console.log(winner);
     sessionStorage.setItem("winner", winner.player);
+    sessionStorage.setItem("color", winner.color);
     window.location.href = "winScreen.html";
 });
 
@@ -244,8 +245,8 @@ function detectSink(){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
         {
-            console.log(playersList.players[holes[i].player - 1]);
-            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});
+            // console.log(playersList.players[holes[i].player - 1]);
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername, color: playerColors[holes[i].player - 1]});
             break; 
         }
         socket.emit("BallDistance", {player: i, distance: dist});
