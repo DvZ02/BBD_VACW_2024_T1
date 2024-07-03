@@ -110,7 +110,7 @@ class Wall {
     }
 }
 
-let cellSize = 50;
+let cellSize = 55;
 let cols = Math.ceil(canvas.width/cellSize);
 let rows = Math.ceil(canvas.height/cellSize);
 
@@ -233,11 +233,15 @@ function checkCollision() {
     if(pixels[0][0] == 18 || pixels[1][0] == 18 )
     {
         ball.dx *= -1;
+        return;
     }
     if(pixels[2][0] == 18 || pixels[3][0] == 18)
     {
         ball.dy *= -1;
+        return;
     }
+
+
 }
 function refreshScene(){
     context.clearRect(0, 0, canvas.width, canvas.height);
