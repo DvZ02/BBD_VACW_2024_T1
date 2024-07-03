@@ -59,7 +59,7 @@ socket.on("MoveBall", (data) => {
 });
 
 const canvas = container.querySelector("#canvas");
-const context = canvas.getContext('2d');
+const context = canvas.getContext('2d', { willReadFrequently: true });
 let size = 600;
 canvas.width = size;
 canvas.height = size;
@@ -256,25 +256,65 @@ function drawBall() {
 
 function checkCollision() {
 
-    let nextBallx = ball.x + (ball.dx / 1000);
-    let nextBally = ball.y + (ball.dy / 1000);
+    let nextBallx = ball.x + (ball.dx/100);
+    let nextBally = ball.y + (ball.dy/100);
 
     // [right, left, down, top]
     let pixels = [context.getImageData(nextBallx + ball.radius + 1, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 1, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 1, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 1, 1, 1).data];
 
     if(pixels[0][0] == 18 || pixels[1][0] == 18 )
     {
-        ball.dx *= -1;
-        return;
+        ball.dx *= -0.5;
     }
     if(pixels[2][0] == 18 || pixels[3][0] == 18)
     {
-        ball.dy *= -1;
-        return;
+        ball.dy *= -0.5;
+    }
+    // Check for collision with walls
+    if ((nextBallx + ball.radius > canvas.width) || nextBallx - ball.radius < 0) {
+        ball.dx *= -0.5;
+    }
+    if ((nextBally + ball.radius > canvas.height) || nextBally - ball.radius < 0) {
+        ball.dy *= -0.5;
     }
 
+    //check the edge detection
+    Maze.closed.forEach((wall) => {
+        let dist = Math.hypot((nextBallx - wall.x1), (nextBally - wall.y1))
+        if (dist < (ball.radius - 2)) {
+            ball.dx *= -0.5;
+            ball.dy *= -0.5;
+            return;
+        }
+        dist = Math.hypot((nextBallx - wall.x2), (nextBally - wall.y2))
+        if (dist < (ball.radius - 2)) {
+            ball.dx *= -0.5;
+            ball.dy *= -0.5;
+            return;
+        }
+    })
 
 }
+
+// function checkCollision() 
+// {
+
+//     let nextBallx = ball.x + (ball.dx);
+//     let nextBally = ball.y + (ball.dy);
+
+//     // [right, left, down, top]
+//     let pixels = [context.getImageData(nextBallx + ball.radius + 0.05, nextBally, 1, 1).data, context.getImageData(nextBallx - ball.radius - 0.05, nextBally, 1, 1).data, context.getImageData(nextBallx, nextBally + ball.radius + 0.05, 1, 1).data, context.getImageData(nextBallx, nextBally - ball.radius - 0.05, 1, 1).data];
+
+//     if(pixels[0][0] == 18 || pixels[1][0] == 18 )
+//     {
+//         ball.dx *= 0;
+//     }
+//     if(pixels[2][0] == 18 || pixels[3][0] == 18)
+//     {
+//         ball.dy *= 0;
+//     }
+// }
+
 function refreshScene(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawMaze();
@@ -283,37 +323,53 @@ function refreshScene(){
 
 // Update ball position
 function updateBall() {
-
-
+    checkCollision();
     // Update ball position
-    ball.x += ball.dx / 1000;
-    ball.y += ball.dy / 1000;
+    ball.x += ball.dx/100;
+    ball.y += ball.dy/100;
 
     // Check for collision with walls
-    if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
-        ball.dx *= -1;
-    }
-    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
-        ball.dy *= -1;
-    }
-
-    checkCollision();
     adjustSpeed();
 }
 
+// function adjustAccel(val, axis)
+// {
+//     if(axis === "x")
+//     {
+//         globalX = val;
+//     }
+//     else if(axis === "y")
+//     {
+//         globalY = val;
+//     }
+// }
+
 function adjustSpeed() {
-    ball.dx = (ball.dx > 0 ? 1 : -1) * (Math.abs(ball.dx) + globalX);
-    ball.dy = (ball.dy > 0 ? 1 : -1) * (Math.abs(ball.dy) + globalY);
-}
+    if(ball.dx + globalX > 1.5)
+    {
+        ball.dx = 1;
+    }
+    else if(ball.dx + globalX < -1.5)
+    {
+        ball.dx = -1.5;
+    }
+    else
+    {
+        ball.dx = ball.dx + globalX;
+    }
 
-function rgbToHex(pixelData) {
-    let r = pixelData[0];
-    let g = pixelData[1];
-    let b = pixelData[2];
-
-    if (r > 255 || g > 255 || b > 255)
-        throw "Invalid color component";
-    return ((r << 24) | (g << 16) | b << 8).toString(16);
+    if(ball.dy + globalY > 1.5)
+    {
+        ball.dy = 1.5;
+    }
+    else if(ball.dy + globalY < -1.5)
+    {
+        ball.dy = -1.5;
+    }
+    else
+    {
+        ball.dy = ball.dy + globalY;
+    }
 }
 
 // Animation loop
@@ -327,7 +383,7 @@ function animate() {
 // Start animation
 animate();
 
-// document.getElementById('increaseSpeedX').addEventListener('click', () => adjustSpeed('x', true));
-// document.getElementById('decreaseSpeedX').addEventListener('click', () => adjustSpeed('x', false));
-// document.getElementById('increaseSpeedY').addEventListener('click', () => adjustSpeed('y', true));
-// document.getElementById('decreaseSpeedY').addEventListener('click', () => adjustSpeed('y', false));
+// document.getElementById('right').addEventListener('click', () => adjustAccel(0.1, "x"));
+// document.getElementById('left').addEventListener('click', () => adjustAccel(-0.1, "x"));
+// document.getElementById('up').addEventListener('click', () => adjustAccel(-0.1, "y"));
+// document.getElementById('down').addEventListener('click', () => adjustAccel(0.1, "y"));
