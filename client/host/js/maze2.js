@@ -46,6 +46,7 @@ socket.on("PlayingPlayers", (players) => {
 socket.on("MoveBall", (data) => {
     globalX = data.x;
     globalY = data.y;
+    console.log(data);
 });
 
 const canvas = container.querySelector("#canvas");
