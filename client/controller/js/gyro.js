@@ -4,8 +4,10 @@ const socket = new io('http://localhost:8000');
 socket.emit("RequestPlayers");
 
 socket.on("GameOver", (winner) => {
-  console.log(winner);
-  window.location.href = "winScreen.html";
+    console.log(winner);
+    window.location.href = "winScreen.html";
+    let winningPlayer = JSON.parse(winner); 
+    document.getElementById().innerHTML = winningPlayer.playerUsername;
 });
 
 function joinAgain(){
