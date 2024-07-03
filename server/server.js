@@ -78,6 +78,11 @@ io.on('connection',  (socket) => {
     socket.on("RequestSignUp",(data) =>{
         let playerToAdd = JSON.parse(data);
         console.log(playerToAdd.playerUsername);
+
+        if(playerToAdd.playerUsername.length > 15){
+            playerToAdd.playerUsername = "Rudolph"
+        }
+
         if(playersDB.includes(playerToAdd.playerUsername) || playersDB.length === 4){ //Maybe add a emit for when full
             socket.emit("RequestSignUpResult", JSON.stringify({
                 result:false, 
