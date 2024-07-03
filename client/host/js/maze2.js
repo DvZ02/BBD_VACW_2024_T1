@@ -8,9 +8,12 @@ let playersList = [];
 
 
 setInterval(() => {
-socket.emit("RequestPlayers");
+    socket.emit("RequestPlayers");
 }, 200);
 
+socket.on("Fun", () => {
+    document.getElementById("fun").style.display = "block";
+});
 
 socket.on("GameOver", (winner) => {
     console.log(winner);
