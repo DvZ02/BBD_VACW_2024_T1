@@ -22,3 +22,10 @@ body{
     font-family: "Press Start 2P", system-ui;
     color: white;
 }
+
+#crown {
+    position: absolute;
+    width: "100px";
+    height:"100px";
+    top: "-35%";
+}
