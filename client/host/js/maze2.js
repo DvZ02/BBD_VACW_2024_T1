@@ -14,7 +14,8 @@ socket.emit("RequestPlayers");
 
 socket.on("GameOver", (winner) => {
     console.log(winner);
-    alert("Game over");
+    sessionStorage.setItem("winner", winner.player);
+    window.location.href = "winScreen.html";
 });
 
 socket.on("PlayingPlayers", (players) => {
@@ -240,7 +241,8 @@ function detectSink(){
         let dist = Math.sqrt((holes[i].x - ball.x) * (holes[i].x - ball.x) + (holes[i].y - ball.y) * (holes[i].y - ball.y));
         if( dist <= minDist)
         {
-           socket.emit("ReachedHole", {player: playersList.players[holes[i].player]});  
+            console.log(playersList.players[holes[i].player - 1]);
+            socket.emit("ReachedHole", {player: playersList.players[holes[i].player - 1].playerUsername});  
         }
     }
     // return null;

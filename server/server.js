@@ -127,5 +127,6 @@ io.on('connection',  (socket) => {
     });
     socket.on("ReachedHole", (data)=>{
         io.emit("GameOver", data);
+        playersDB = [];
     })
 });
