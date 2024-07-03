@@ -14,8 +14,11 @@ setInterval(() => {
 
 socket.on("GameOver", (winner) => {
     console.log(winner);
-    alert("Game over");
+    window.location.href = "winScreen.html";
 });
+function joinAgain(){
+    window.location.href = "lobby.html";
+}
 
 socket.on("PlayingPlayers", (players) => {
     playersList = JSON.parse(players);

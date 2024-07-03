@@ -4,10 +4,15 @@ const socket = new io('https://tilt-3596.onrender.com');
 socket.emit("RequestPlayers");
 
 socket.on("GameOver", (winner) => {
-  console.log(winner);
-  // alert("Game over");
-  // window.location.href = "gameOver.html";
+    console.log(winner);
+    window.location.href = "winScreen.html";
+    let winningPlayer = JSON.parse(winner); 
+    document.getElementById().innerHTML = winningPlayer.playerUsername;
 });
+
+function joinAgain(){
+    window.location.href = "controller.html";
+}
 
 socket.on("PlayingPlayers", (players) =>{
   let playerList = JSON.parse(players);
