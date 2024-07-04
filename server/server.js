@@ -13,7 +13,7 @@ app.use(express.static('../client'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    funThreshold = Math.floor(Math.random() * 100);
+    funThreshold = Math.floor(Math.random() * 1000 + 10);
     console.log(funThreshold);   
 });
 
@@ -148,11 +148,12 @@ io.on('connection',  (socket) => {
             let temp = data.norm.x;
             data.norm.x = data.norm.y;
             data.norm.y = temp;
+            console.log("Inverted: " + data.norm);
             socket.broadcast.emit("MoveBall", data.norm);
-            funCounter = 0;
             // funCounter = 0;
             // notFun = true;
         }else{
+            console.log("Not Inverted: " + data.norm);
             socket.broadcast.emit("MoveBall", data.norm);
         }
     });
@@ -168,6 +169,8 @@ io.on('connection',  (socket) => {
     });
 
     socket.on("NotFun", () =>{
+        console.log("NotFun"); 
+        funCounter = 0;
         notFun = true;
     });
 });

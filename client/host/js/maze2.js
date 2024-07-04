@@ -15,7 +15,9 @@ socket.on("Fun", () => {
     document.getElementById("fun").innerHTML = "FUN: Inverted Controls!";
     document.getElementById("fun").style.display = "block";
     setTimeout(() => {
+        // console.log("NotFun");
         socket.emit("NotFun");
+        document.getElementById("fun").style.display = "none";
     }, 10000);
 });
 
