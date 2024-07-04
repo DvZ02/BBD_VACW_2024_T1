@@ -21,5 +21,13 @@ function signup(){
 }
 
 socket.on('GameStarted', (players) =>{
-    window.location.href = "./gyro.html";
+    let playersList = JSON.parse(players);
+    let username = sessionStorage.getItem("username");
+    playersList.players.forEach(player => {
+        if(player.playerUsername === username){
+            window.location.href = "./gyro.html";
+
+            // sessionStorage.setItem("color", player.color);
+        }
+    });
 });
