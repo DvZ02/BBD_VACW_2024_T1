@@ -145,9 +145,9 @@ io.on('connection',  (socket) => {
 
         if(funCounter >= funThreshold && !notFun){
             io.emit("Fun");
-            let temp = data.norm.x;
-            data.norm.x = data.norm.y;
-            data.norm.y = temp;
+            // let temp = data.norm.x;
+            data.norm.x = -data.norm.X;
+            data.norm.y = -data.norm.y;
             console.log("Inverted: " + data.norm);
             socket.broadcast.emit("MoveBall", data.norm);
             // funCounter = 0;
