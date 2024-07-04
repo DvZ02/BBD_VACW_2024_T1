@@ -153,7 +153,7 @@ io.on('connection',  (socket) => {
             // funCounter = 0;
             // notFun = true;
         }else{
-            console.log("Not Inverted: " + data.norm);
+            notFun = false;
             socket.broadcast.emit("MoveBall", data.norm);
         }
     });
@@ -169,7 +169,7 @@ io.on('connection',  (socket) => {
     });
 
     socket.on("NotFun", () =>{
-        console.log("NotFun"); 
+        // console.log("NotFun"); 
         funCounter = 0;
         notFun = true;
     });
