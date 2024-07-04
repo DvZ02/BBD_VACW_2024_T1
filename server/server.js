@@ -13,7 +13,7 @@ app.use(express.static('../client'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    funThreshold = Math.floor(Math.random() * 1500);
+    funThreshold = Math.floor(Math.random() * 100);
     console.log(funThreshold);   
 });
 
