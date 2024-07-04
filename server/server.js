@@ -21,6 +21,8 @@ const io = socketio(server);
 let ballX=0, ballY=0, ballZ=0;
 let playersSession=[]; // For now this is a 2D array which contains the usernames for the current game session
 let playersDB = []
+let funGod = "";
+let currentFunCount = 0;
 
 let colors = ["green", "blue", "orange", "pink"]
 
@@ -121,6 +123,16 @@ io.on('connection',  (socket) => {
     socket.on("GyroData", (data) =>{
         // let gyroData = JSON.parse(data);
         funCounter++;
+        if(data.user != funGod){
+            --currentFunCount;
+            if(currentFunCount<=0){
+                currentFunCount++;
+                funGod=data.user;
+            }
+        }
+        else{
+            currentFunCount++;
+        }
         if(funCounter >= funThreshold){
             io.emit("Fun");
             funCounter = 0;
@@ -142,7 +154,10 @@ io.on('connection',  (socket) => {
     socket.on("ReachedHole", (data)=>{
         // console.log(data);
         io.emit("GameOver", data);
+        socket.emit("FunGod", funGod);
         playersDB = [];
+        currentFunCount=0;
+        funGod="";
     })
 
     socket.on("BallDistance", (data) =>{
