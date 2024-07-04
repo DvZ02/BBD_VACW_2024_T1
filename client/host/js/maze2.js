@@ -12,7 +12,7 @@ setInterval(() => {
 }, 200);
 
 socket.on("Fun", () => {
-    document.getElementById("fun").innerHTML = "FUN: Inverted Controls!";
+    document.getElementById("fun").innerHTML = "FUN: INVERTED CONTROLS!";
     document.getElementById("fun").style.display = "block";
     setTimeout(() => {
         // console.log("NotFun");
