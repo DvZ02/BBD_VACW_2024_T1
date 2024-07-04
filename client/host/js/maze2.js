@@ -18,7 +18,7 @@ socket.on("Fun", () => {
         // console.log("NotFun");
         socket.emit("NotFun");
         document.getElementById("fun").style.display = "none";
-    }, 10000);
+    }, 30000);
 });
 
 socket.on("GameOver", (winner) => {
