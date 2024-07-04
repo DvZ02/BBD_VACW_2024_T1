@@ -148,7 +148,7 @@ io.on('connection',  (socket) => {
             // let temp = data.norm.x;
             data.norm.x = -data.norm.x;
             data.norm.y = -data.norm.y;
-            console.log("Inverted: " + data.norm);
+            // console.log("Inverted: " + data.norm);
             socket.broadcast.emit("MoveBall", data.norm);
             // funCounter = 0;
             // notFun = true;
