@@ -13,7 +13,7 @@ app.use(express.static('../client'));
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    funThreshold = Math.floor(Math.random() * 10000);
+    funThreshold = Math.floor(Math.random() * 1500);
     console.log(funThreshold);   
 });
 
@@ -26,6 +26,7 @@ let colors = ["green", "blue", "orange", "pink"]
 
 let funThreshold = 0;
 let funCounter = 0;
+let notFun = false;
 
 io.on('connection',  (socket) => {
     console.log('New client connected');
@@ -121,10 +122,14 @@ io.on('connection',  (socket) => {
     socket.on("GyroData", (data) =>{
         // let gyroData = JSON.parse(data);
         funCounter++;
-        if(funCounter >= funThreshold){
-            io.emit("Fun");
-            funCounter = 0;
-        }
+        // let notFun = false;
+
+
+        // if(notFun && funCounter >= funThreshold){
+        //     io.emit("NotFun");
+        //     funCounter = 0;
+        //     notFun = false;
+        // }
 
         playersDB.forEach(player => {
             if(player.playerUsername == data.user){
@@ -137,7 +142,19 @@ io.on('connection',  (socket) => {
             // console.log(data.norm)
             // console.log(player.playerUsername + " " + player.contribution);
         });
-        socket.broadcast.emit("MoveBall", data.norm);
+
+        if(funCounter >= funThreshold && !notFun){
+            io.emit("Fun");
+            let temp = data.norm.x;
+            data.norm.x = data.norm.y;
+            data.norm.y = temp;
+            socket.broadcast.emit("MoveBall", data.norm);
+            funCounter = 0;
+            // funCounter = 0;
+            // notFun = true;
+        }else{
+            socket.broadcast.emit("MoveBall", data.norm);
+        }
     });
     socket.on("ReachedHole", (data)=>{
         // console.log(data);
@@ -148,5 +165,9 @@ io.on('connection',  (socket) => {
     socket.on("BallDistance", (data) =>{
         if(playersDB[data.player] != undefined)
             playersDB[data.player].score = Math.round(data.distance, 2);
+    });
+
+    socket.on("NotFun", () =>{
+        notFun = true;
     });
 });
